@@ -1,0 +1,5 @@
+{
+	"app_name": "Türkçe uygulama adı",
+	"hello_user": "Merhaba, {{user}}",
+	"footer": "Test için oluşturulmuş <1>Phrase blog</1> makalesi.<3/> React, i18next, and Bulma kullanılarak hazırlandı."
+}

@@ -5,7 +5,7 @@ const Test: React.FC<WithTranslation> = (props) => {
 	const { t } = useTranslation();
 	return (
 		<div>
-			<h1>{t("welcome")}</h1>
+			<h1>{t("app_name")}</h1>
 		</div>
 	);
 };
