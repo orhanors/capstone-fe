@@ -8,7 +8,7 @@ const UseLang = () => {
 			<nav>
 				<div className='navbar-brand'>
 					<a className='navbar-item' href='/'>
-						<strong>{t("app_name")}</strong>
+						<strong>{t("parent.app_name")}</strong>
 					</a>
 					<p>{t("hello_user", { user: "Orhan" })}</p>
 				</div>

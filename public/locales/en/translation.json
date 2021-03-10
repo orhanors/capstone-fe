@@ -1,5 +1,11 @@
 {
-	"app_name": "English App name",
+	"parent": {
+		"app_name": "English App name"
+	},
 	"hello_user": "Hello, {{user}}",
-	"footer": "Demo for <1>Phrase blog</1> article.<4/>Created with React, i18next, and Bulma."
+	"footer": "Demo for <1>Phrase blog</1> article.<4/>Created with React, i18next, and Bulma.",
+	"navbar": {
+		"home": "Home",
+		"shop": "Shop"
+	}
 }

@@ -10,7 +10,7 @@ import LanguageSwitcher from "../components/test/LanguageSwitcher";
 function App() {
 	const { i18n } = useTranslation();
 	useEffect(() => {
-		document.dir = i18n.dir();
+		document.dir = i18n.dir(); //If the lng is arabic it will directed by right-to-left
 	}, [i18n, i18n.language]);
 
 	return (
