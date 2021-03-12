@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import "./App.css";
+import "./App.scss";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-import UseLang from "../components/test/UseLang";
-import LanguageSwitcher from "../components/test/LanguageSwitcher";
+import NavBar from "../components/navBar/NavBar";
+
 function App() {
 	const { i18n } = useTranslation();
 	useEffect(() => {
@@ -16,8 +16,7 @@ function App() {
 	return (
 		<div className='App'>
 			<Router>
-				<LanguageSwitcher />
-				<UseLang />
+				<NavBar />
 			</Router>
 		</div>
 	);

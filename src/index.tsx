@@ -1,11 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import App from "./app/App";
 import "./services/i18n";
+import store from "./store/_setup/configuration/store";
 ReactDOM.render(
 	<React.StrictMode>
 		<React.Suspense fallback='Loading...'>
-			<App />
+			<Provider store={store}>
+				<App />
+			</Provider>
 		</React.Suspense>
 	</React.StrictMode>,
 	document.getElementById("root")
