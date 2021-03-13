@@ -1,13 +1,15 @@
-import React, { useRef } from "react";
+import React, { ForwardRefRenderFunction } from "react";
 import { useTranslation } from "react-i18next";
 import "./language.scss";
 import EnFlag from "../../assets/imgs/en.svg";
 import TrFlag from "../../assets/imgs/tr.svg";
 
 interface Props {
-	ref: React.MutableRefObject<any>;
+	ref: React.MutableRefObject<HTMLDivElement>;
 }
-const LanguageSwitcher = (props: Props) => {
+const LanguageSwitcher: ForwardRefRenderFunction<HTMLDivElement, Props> = (
+	props
+) => {
 	const { i18n } = useTranslation();
 	const handleLanguageChange = (e: any) => {
 		i18n.changeLanguage(e.target.id);

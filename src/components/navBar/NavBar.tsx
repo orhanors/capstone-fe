@@ -43,7 +43,10 @@ function NavBar() {
 	useOnClickOutside(langSwitcherRef, () => setShowLanguages(false));
 	return (
 		<>
-			{showLanguages && <LanguageSwitcher ref={langSwitcherRef} />}
+			{
+				//@ts-ignore
+				showLanguages && <LanguageSwitcher ref={langSwitcherRef} />
+			}
 			<div
 				ref={navRef}
 				className='nav-container d-flex justify-content-between'>
