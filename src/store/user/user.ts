@@ -44,7 +44,7 @@ export default slice.reducer;
 
 export const getUserProfile = () =>
 	apiCall({
-		url: `http://localhost:3001/api/users/me`,
+		url: `${process.env.REACT_APP_BE_URL}/users/me`,
 		onStart: requested.type,
 		onSuccess: loginSuccess.type,
 		onError: failed.type,
@@ -52,7 +52,7 @@ export const getUserProfile = () =>
 
 export const logout = () =>
 	apiCall({
-		url: `http://localhost:3001/api/users/logout`,
+		url: `${process.env.REACT_APP_BE_URL}/users/logout`,
 		onStart: requested.type,
 		onSuccess: logoutSuccess.type,
 		onError: failed.type,
