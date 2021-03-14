@@ -1,0 +1,33 @@
+import React, { ReactNode, useEffect } from "react";
+import { Route, Redirect, useHistory, RouteProps } from "react-router-dom";
+import { isAuthUser } from "../utils/auth";
+
+import { useDispatch } from "react-redux";
+import { getUserProfile } from "../store/user/user";
+
+const ProtectedRoute = ({ component, ...rest }: any) => {
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (isAuthUser()) {
+			console.log(rest.path);
+			if (rest.path === "/") {
+				dispatch(getUserProfile());
+			}
+		}
+	}, []);
+	return (
+		<Route
+			{...rest}
+			render={(props) =>
+				isAuthUser() ? (
+					React.createElement(component, props)
+				) : (
+					<Redirect {...rest} to='/login' />
+				)
+			}
+		/>
+	);
+};
+
+export default ProtectedRoute;

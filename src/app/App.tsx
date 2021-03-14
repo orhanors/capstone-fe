@@ -6,6 +6,9 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import NavBar from "../components/navBar/NavBar";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import Products from "../components/products/Products";
 
 function App() {
 	const { i18n } = useTranslation();
@@ -16,7 +19,10 @@ function App() {
 	return (
 		<div className='App'>
 			<Router>
-				<NavBar />
+				<DndProvider backend={HTML5Backend}>
+					<NavBar />
+					<Products />
+				</DndProvider>
 			</Router>
 		</div>
 	);
