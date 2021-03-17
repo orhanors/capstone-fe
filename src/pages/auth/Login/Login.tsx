@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import OAuth from "../Oauth";
 
 interface Props {
 	change: () => void;
@@ -16,6 +17,7 @@ function Login(props: Props) {
 			<div className='formBx'>
 				<form>
 					<h2>Sign In</h2>
+					<OAuth />
 					<input type='text' placeholder='Username' />
 					<input type='password' placeholder='Password' />
 					<input type='submit' defaultValue='Login' />

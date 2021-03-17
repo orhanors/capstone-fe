@@ -20,6 +20,11 @@
 	text-align: center;
 	background: #fff;
 	color: #535a60;
+	span {
+		@media screen and (max-width: 395px) {
+			display: none;
+		}
+	}
 }
 
 .facebook-login {

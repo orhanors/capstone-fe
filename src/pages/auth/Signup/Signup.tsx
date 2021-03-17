@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import OAuth from "../Oauth";
 interface Props {
 	change: () => void;
 }
@@ -9,6 +10,7 @@ function Signup(props: Props) {
 			<div className='formBx'>
 				<form>
 					<h2>Create an account</h2>
+					<OAuth />
 					<input type='text' placeholder='Username' />
 					<input type='email' placeholder='Email Address' />
 					<input type='password' placeholder='Create Password' />

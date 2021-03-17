@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import React, { useRef } from "react";
+
 import "../auth.scss";
 import Login from "../Login/Login";
 import OAuth from "../Oauth";

@@ -30,7 +30,7 @@ function OAuth() {
 							/>
 						</g>
 					</svg>
-					Continue with Google
+					<span>Continue with Google</span>
 				</div>
 			</a>
 			<a href={process.env.REACT_APP_BE_URL + "/auth/facebookLogin"}>
@@ -46,7 +46,7 @@ function OAuth() {
 							fill='#fff'
 						/>
 					</svg>
-					Continue with Facebook
+					<span>Continue with Facebook</span>
 				</div>
 			</a>
 		</div>
