@@ -1,5 +1,5 @@
-import React, { ReactNode, useEffect } from "react";
-import { Route, Redirect, useHistory, RouteProps } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Redirect } from "react-router-dom";
 import { isAuthUser } from "../utils/auth";
 
 import { useDispatch } from "react-redux";
