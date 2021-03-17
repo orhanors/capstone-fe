@@ -1,0 +1,122 @@
+@import "../../style/theme.scss";
+.auth-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 8vh;
+
+	.auth {
+		width: 60vw;
+		height: 60vh;
+		transition: 0.4s;
+		border-radius: 30px;
+		box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+		// &:hover {
+		// 	transition: 0.4s;
+		// 	transform: scale(1.03);
+		// }
+
+		@media screen and (max-width: 481px) {
+			width: 100%;
+		}
+		.auth-method {
+			height: 60vh;
+			//background-color: rgb(184, 202, 18);
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			transform: translateY(-50);
+
+			#login,
+			#signup {
+				font-size: 1.5rem;
+				transition: 0.4s;
+			}
+			#login {
+				@media screen and (max-width: 769px) {
+					margin-right: 10px;
+				}
+
+				&:hover {
+					cursor: pointer;
+				}
+			}
+
+			#signup {
+				&:hover {
+					cursor: pointer;
+				}
+			}
+			@media screen and (max-width: 769px) {
+				height: 8vh;
+				flex-direction: row;
+			}
+		}
+
+		.auth-interaction {
+			height: 60vh;
+			//background-color: rgb(230, 140, 6);
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			transform: translateY(-50);
+
+			@media screen and (max-width: 769px) {
+				height: 52vh;
+			}
+		}
+
+		.line {
+			border-left: 4px solid $basic-gray;
+			height: 50vh;
+			transform: 0.3s;
+			margin-top: 5vh;
+			@media screen and (max-width: 769px) {
+				display: none;
+			}
+		}
+		.login,
+		.signup {
+			input {
+				font-size: 1rem;
+				font-weight: 400;
+				padding-left: 0.1rem;
+				padding-top: 0.3rem;
+				padding-bottom: 0.3rem;
+
+				&::placeholder {
+					font-size: 0.8rem;
+					color: $basic-text-color;
+				}
+			}
+
+			button {
+				border: none;
+				border-radius: 0.3rem;
+				padding-top: 0.4rem;
+				padding-bottom: 0.4rem;
+
+				background-color: $basic-blue;
+				color: $basic-dark;
+
+				&:hover {
+					opacity: 0.7;
+				}
+			}
+		}
+		.login {
+			input {
+				padding-right: 4rem;
+			}
+		}
+
+		.signup {
+			button {
+				width: 96%;
+			}
+		}
+	}
+}

@@ -3,7 +3,7 @@ import "./oauth.scss";
 function OAuth() {
 	return (
 		<div className='open-ids'>
-			<a href={process.env.REACT_APP_BE_URL + "/users/googleLogin"}>
+			<a href={process.env.REACT_APP_BE_URL + "/auth/googleLogin"}>
 				<div className='auth-provider google-login'>
 					<svg
 						aria-hidden='true'
