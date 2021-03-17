@@ -1,16 +1,31 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-function Login() {
+interface Props {
+	change: () => void;
+}
+function Login(props: Props) {
 	return (
-		<div className='login mb-3'>
-			<div className='login-inputs d-flex flex-column'>
-				<input className='mb-3' type='email' placeholder='E-mail' />
-				<input
-					className='mb-3'
-					type='password'
-					placeholder='Password'
+		<div className='user signinBx'>
+			<div className='imgBx'>
+				<img
+					src='https://raw.githubusercontent.com/WoojinFive/CSS_Playground/master/Responsive%20Login%20and%20Registration%20Form/img1.jpg'
+					alt=''
 				/>
-				<button className='login-btn mb-2'>Login</button>
+			</div>
+			<div className='formBx'>
+				<form>
+					<h2>Sign In</h2>
+					<input type='text' placeholder='Username' />
+					<input type='password' placeholder='Password' />
+					<input type='submit' defaultValue='Login' />
+					<p className='signup'>
+						Don't have an account ?
+						<Link to='/login' onClick={props.change}>
+							Sign Up.
+						</Link>
+					</p>
+				</form>
 			</div>
 		</div>
 	);
