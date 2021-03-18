@@ -2,13 +2,17 @@ import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./App.scss";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import NavBar from "../components/navBar/NavBar";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Products from "../components/products/Products";
+import Auth from "../pages/auth/Auth/Auth";
+import User from "../pages/user/User";
+import ProtectedRoute from "./ProtectedRoute";
+import Seller from "../pages/user/Seller";
 
 function App() {
 	const { i18n } = useTranslation();
@@ -21,7 +25,10 @@ function App() {
 			<Router>
 				<DndProvider backend={HTML5Backend}>
 					<NavBar />
-					<Products />
+					<Route path='/login' exact component={Auth} />
+					<ProtectedRoute path='/' exact component={Products} />
+					<ProtectedRoute path='/user' exact component={User} />
+					<ProtectedRoute path='/seller' exact component={Seller} />
 				</DndProvider>
 			</Router>
 		</div>
