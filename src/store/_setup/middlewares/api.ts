@@ -7,7 +7,7 @@ import axios from "axios";
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
 import * as actions from "../../api/api";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
-const { REACT_APP_BE_URL } = process.env;
+
 const refreshAuthLogic = (failedRequest: any) =>
 	axios({
 		url: `http://localhost:3001/api/users/refreshToken`,

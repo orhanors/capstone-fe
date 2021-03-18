@@ -25,8 +25,8 @@ function App() {
 			<Router>
 				<DndProvider backend={HTML5Backend}>
 					<NavBar />
-					<Route path='/' exact component={Products} />
 					<Route path='/login' exact component={Auth} />
+					<ProtectedRoute path='/' exact component={Products} />
 					<ProtectedRoute path='/user' exact component={User} />
 					<ProtectedRoute path='/seller' exact component={Seller} />
 				</DndProvider>

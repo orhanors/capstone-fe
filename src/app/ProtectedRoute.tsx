@@ -12,6 +12,7 @@ const ProtectedRoute = ({ component, ...rest }: any) => {
 		if (isAuthUser()) {
 			console.log(rest.path);
 			if (rest.path === "/") {
+				console.log("yeahh worked");
 				dispatch(getUserProfile());
 			}
 		}
@@ -20,7 +21,7 @@ const ProtectedRoute = ({ component, ...rest }: any) => {
 		<Route
 			{...rest}
 			render={(props) =>
-				isAuthUser() ? (
+				isAuthUser() || rest.path === "/" ? (
 					React.createElement(component, props)
 				) : (
 					<Redirect {...rest} to='/login' />

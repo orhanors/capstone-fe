@@ -5,6 +5,8 @@ import signupImg from "../../../assets/imgs/signup.webp";
 import { useTranslation } from "react-i18next";
 import isEmail from "validator/lib/isEmail";
 import isEmpty from "validator/lib/isEmpty";
+import { backend } from "../../../utils/backend";
+import BasicLoader from "../../../loaders/spinner/BasicLoader";
 interface Props {
 	change: () => void;
 }
@@ -18,9 +20,11 @@ function Signup(props: Props) {
 		password2: "",
 	});
 	const [err, setErr] = useState("");
-
+	const [success, setSuccess] = useState("");
+	const [loading, setLoading] = useState(false);
 	const handleFormChange = (e: any) => {
 		setErr("");
+		setSuccess("");
 		setFormdata({ ...formData, [e.target.id]: e.target.value });
 	};
 	const handleSubmit = (e: any) => {
@@ -39,12 +43,39 @@ function Signup(props: Props) {
 		} else if (formData.password.length < 6) {
 			setErr("Password length must be at least 6 characters");
 		} else {
+			setLoading(true);
 			let { fullName, email, password } = formData;
 			let name = fullName.split(" ").slice(0, -1).join(" ");
 			let surname = fullName.split(" ").slice(-1).join("");
 
 			let body = { name, surname, email, password };
-			//TODO make request
+
+			backend({ url: "/auth/signup", method: "post", data: body })
+				.then((response) => {
+					if (response.status === 201 || response.status === 200) {
+						setSuccess("Successfuly created! Please login");
+						setErr("");
+						setFormdata({
+							fullName: "",
+							email: "",
+							password: "",
+							password2: "",
+						});
+						setLoading(false);
+					} else {
+						setErr("Something went wrong");
+						setLoading(false);
+					}
+				})
+				.catch((e) => {
+					if (e.response.data.code === 400) {
+						setErr("Email already exist");
+						setLoading(false);
+					} else {
+						setErr("Something went wrong");
+						setLoading(false);
+					}
+				});
 		}
 	};
 	return (
@@ -55,8 +86,11 @@ function Signup(props: Props) {
 					<OAuth />
 					<small
 						className='my-2'
-						style={{ color: "red", textAlign: "center" }}>
-						{err}
+						style={{
+							color: `${err ? "red" : "green"}`,
+							textAlign: "center",
+						}}>
+						{err ? err : success}
 					</small>
 					<input
 						type='text'
@@ -83,7 +117,11 @@ function Signup(props: Props) {
 						onChange={handleFormChange}
 					/>
 
-					<button onClick={handleSubmit}>{t("login.signup")}</button>
+					<button onClick={handleSubmit}>
+						{loading && <BasicLoader size='sm' />}
+
+						{t("login.signup")}
+					</button>
 					<p className='signup'>
 						{t("login.yesAccount")}
 						<Link

@@ -2,10 +2,8 @@ import React, { useRef } from "react";
 
 import "../auth.scss";
 import Login from "../Login/Login";
-import OAuth from "../Oauth";
 import Signup from "../Signup/Signup";
 function Auth() {
-	const LOGIN = "login";
 	const ref = useRef<HTMLDivElement>(null);
 
 	return (

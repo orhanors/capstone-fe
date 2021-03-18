@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import OAuth from "../Oauth";
 import loginImg from "../../../assets/imgs/login.webp";
 import { useTranslation } from "react-i18next";
 import isEmail from "validator/lib/isEmail";
 import isEmpty from "validator/lib/isEmpty";
+import { backend } from "../../../utils/backend";
+import BasicLoader from "../../../loaders/spinner/BasicLoader";
+import { useDispatch } from "react-redux";
+import { getUserProfile } from "../../../store/user/user";
 interface Props {
 	change: () => void;
 }
@@ -12,6 +16,9 @@ function Login(props: Props) {
 	const { t } = useTranslation();
 	const [formData, setFormData] = useState({ email: "", password: "" });
 	const [err, setErr] = useState("");
+	const [loading, setLoading] = useState(false);
+	const history = useHistory();
+	const dispatch = useDispatch();
 	const handleFormChange = (e: any) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
@@ -23,11 +30,28 @@ function Login(props: Props) {
 		} else if (!isEmail(formData.email)) {
 			setErr("Invalid email format");
 		} else {
+			setLoading(true);
 			const { email, password } = formData;
 
 			const body = { email, password };
 
-			//TODO check if email exist
+			backend({ url: "/auth/login", method: "post", data: body })
+				.then((response) => {
+					if (response.status === 201 || response.status === 200) {
+						setLoading(false);
+						dispatch(getUserProfile());
+						history.push("/");
+					}
+				})
+				.catch((e) => {
+					if (e?.response?.status === 400) {
+						setErr(e.response.data?.errors);
+						setLoading(false);
+					} else {
+						setErr("Something went wrong!");
+						setLoading(false);
+					}
+				});
 		}
 	};
 	return (
@@ -58,7 +82,11 @@ function Login(props: Props) {
 						name='password'
 						onChange={handleFormChange}
 					/>
-					<button onClick={handleSubmit}>{t("login.login")}</button>
+					<button onClick={handleSubmit}>
+						{" "}
+						{loading && <BasicLoader size='sm' />}{" "}
+						{t("login.login")}
+					</button>
 					<p className='signup'>
 						{t("login.noAccount")}
 						<Link
