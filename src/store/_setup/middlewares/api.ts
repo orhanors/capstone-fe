@@ -7,7 +7,7 @@ import axios from "axios";
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
 import * as actions from "../../api/api";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
-const { REACT_APP_BE_URL } = process.env;
+
 const refreshAuthLogic = (failedRequest: any) =>
 	axios({
 		url: `http://localhost:3001/api/users/refreshToken`,
@@ -22,7 +22,6 @@ createAuthRefreshInterceptor(axios, refreshAuthLogic);
 const api: Middleware = ({ dispatch }: MiddlewareAPI) => (
 	next: Dispatch<AnyAction>
 ) => async (action: AnyAction) => {
-	console.log("action is: ", action);
 	if (action.type !== actions.apiCall.type) {
 		//if action is not for api call,go to the next step
 		return next(action);

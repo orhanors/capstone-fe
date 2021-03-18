@@ -19,7 +19,10 @@ import { BsChevronCompactDown, BsChevronCompactRight } from "react-icons/bs";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
 import EnFlag from "../../assets/imgs/en.svg";
 import TrFlag from "../../assets/imgs/tr.svg";
+import { isAuthUser } from "../../utils/auth";
+import { useHistory } from "react-router-dom";
 function NavBar() {
+	const history = useHistory();
 	const { i18n, t } = useTranslation();
 	const dispatch = useDispatch();
 
@@ -38,6 +41,12 @@ function NavBar() {
 		} else {
 			navRef.current!.className =
 				"nav-container d-flex justify-content-between";
+		}
+	};
+
+	const handleUserRoute = () => {
+		if (!isAuthUser()) {
+			history.push("/login");
 		}
 	};
 	useOnClickOutside(langSwitcherRef, () => setShowLanguages(false));
@@ -101,7 +110,7 @@ function NavBar() {
 						className='nav-icon mx-2'>
 						<SearchIcon color={iconColor} />
 					</span>
-					<span className='nav-icon mx-2'>
+					<span onClick={handleUserRoute} className='nav-icon mx-2'>
 						<UserIcon color={iconColor} />
 					</span>
 					<span

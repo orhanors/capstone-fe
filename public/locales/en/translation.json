@@ -9,5 +9,20 @@
 		"about": "About",
 		"blog": "Blog",
 		"contact": "Contact"
+	},
+	"login": {
+		"title": "Create an account",
+		"signup": "Sign Up",
+		"login": "Sign in",
+		"name": "Full Name",
+		"email": "Email Address",
+		"enterPassw": "Password",
+		"password": "Create Password",
+		"password2": "Confirm Password",
+		"noAccount": "Don't have an account?",
+		"yesAccount": "Already  have an account?",
+		"warning": {
+			"required": "All fields are required"
+		}
 	}
 }

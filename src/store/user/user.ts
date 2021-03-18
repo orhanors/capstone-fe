@@ -24,6 +24,12 @@ const slice = createSlice({
 			isLoggedIn: true,
 			data: action.payload,
 		}),
+		profileSuccess: (state, action: PayloadAction<object>) => ({
+			...state,
+			loading: false,
+			isLoggedIn: true,
+			data: action.payload,
+		}),
 		logoutSuccess: (state, action: PayloadAction<object>) => ({
 			...state,
 			loading: false,
@@ -38,21 +44,35 @@ const slice = createSlice({
 	},
 });
 
-export const { requested, loginSuccess, logoutSuccess, failed } = slice.actions;
+export const {
+	requested,
+	loginSuccess,
+	logoutSuccess,
+	failed,
+	profileSuccess,
+} = slice.actions;
 
 export default slice.reducer;
 
-export const getUserProfile = () =>
+export const login = () =>
 	apiCall({
-		url: `http://localhost:3001/api/users/me`,
+		url: `${process.env.REACT_APP_BE_URL}/auth/login`,
 		onStart: requested.type,
 		onSuccess: loginSuccess.type,
 		onError: failed.type,
 	});
 
+export const getUserProfile = () =>
+	apiCall({
+		url: `${process.env.REACT_APP_BE_URL}/users/me`,
+		onStart: requested.type,
+		onSuccess: profileSuccess.type,
+		onError: failed.type,
+	});
+
 export const logout = () =>
 	apiCall({
-		url: `http://localhost:3001/api/users/logout`,
+		url: `${process.env.REACT_APP_BE_URL}/users/logout`,
 		onStart: requested.type,
 		onSuccess: logoutSuccess.type,
 		onError: failed.type,

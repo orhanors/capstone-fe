@@ -15,7 +15,10 @@
 	overflow-x: hidden;
 	transition: 0.7s;
 	padding-top: 60px;
-
+	.products {
+		height: 100%;
+		width: 100%;
+	}
 	.closebtn {
 		position: absolute;
 		top: 0;
