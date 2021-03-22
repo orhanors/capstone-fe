@@ -10,9 +10,12 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Products from "../components/products/Products";
 import Auth from "../pages/auth/Auth/Auth";
-import User from "../pages/user/User";
+
 import ProtectedRoute from "./ProtectedRoute";
 import Seller from "../pages/user/Seller";
+import Home from "../pages/home/Home";
+import AddProduct from "../pages/user/addProduct/AddProduct";
+import MyProducts from "../pages/user/MyProducts";
 
 function App() {
 	const { i18n } = useTranslation();
@@ -26,8 +29,17 @@ function App() {
 				<DndProvider backend={HTML5Backend}>
 					<NavBar />
 					<Route path='/login' exact component={Auth} />
-					<ProtectedRoute path='/' exact component={Products} />
-					<ProtectedRoute path='/user' exact component={User} />
+					<ProtectedRoute path='/' exact component={Home} />
+					<ProtectedRoute
+						path='/addProduct'
+						exact
+						component={AddProduct}
+					/>
+					<ProtectedRoute
+						path='/myProducts'
+						exact
+						component={MyProducts}
+					/>
 					<ProtectedRoute path='/seller' exact component={Seller} />
 				</DndProvider>
 			</Router>

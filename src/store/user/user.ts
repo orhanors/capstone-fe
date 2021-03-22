@@ -1,10 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { apiCall } from "../api/api";
-import { IUSer } from "./user.types.d";
+import { IUserStore, IUser } from "./user.types.d";
 
-const initialState: IUSer = {
-	data: {},
+const initialUser = {
+	_id: "",
+	role: "",
+	name: "",
+	surname: "",
+	image: "",
+	email: "",
+	createdAt: new Date("2021-03-22T11:31:00.542Z"),
+	updatedAt: new Date("2021-03-22T11:31:00.542Z"),
+};
+const initialState: IUserStore = {
+	data: initialUser,
 	isLoggedIn: false,
 	errorMessage: "",
 	loading: false,
@@ -18,23 +28,23 @@ const slice = createSlice({
 			...state,
 			loading: true,
 		}),
-		loginSuccess: (state, action: PayloadAction<object>) => ({
+		loginSuccess: (state, action: PayloadAction<IUser>) => ({
 			...state,
 			loading: false,
 			isLoggedIn: true,
 			data: action.payload,
 		}),
-		profileSuccess: (state, action: PayloadAction<object>) => ({
+		profileSuccess: (state, action: PayloadAction<IUser>) => ({
 			...state,
 			loading: false,
 			isLoggedIn: true,
 			data: action.payload,
 		}),
-		logoutSuccess: (state, action: PayloadAction<object>) => ({
+		logoutSuccess: (state, action: PayloadAction<IUser>) => ({
 			...state,
 			loading: false,
 			isLoggedIn: false,
-			data: {},
+			data: initialUser,
 		}),
 		failed: (state, action: PayloadAction<string>) => ({
 			...state,

@@ -1,5 +1,5 @@
 //GENERAL
-$basic-text-color: gray;
+$basic-text-color: rgb(75, 75, 75);
 $basic-dark: rgba(8, 8, 8, 0.877);
 $basic-gray: rgb(204, 204, 204);
 $theme-bg-color: white;
@@ -7,6 +7,10 @@ $dropdown-background-color: rgb(236, 236, 236);
 $hover-background-color: rgb(194, 194, 194);
 $basic-blue: #677eff;
 $basic-yellow: #fdde4d;
+
+$thin-border: 1px solid rgba(128, 128, 128, 0.404);
+$input-gray: rgba(209, 209, 209, 0.322);
+$input-focus: rgba(209, 209, 209, 0.514);
 //NAVBAR
 $nav-text-color: rgb(88, 88, 88);
 $nav-text-size: 16px;
