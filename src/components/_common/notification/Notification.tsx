@@ -1,10 +1,11 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "../../../store/_helpers/useCustomSelector";
 import { Link } from "react-router-dom";
 import "../../../style/animations.scss";
 import "./notification.scss";
 import { unsetNotification } from "../../../store/notification/notification";
+import { NOTIFICATION_TIME } from "../../../utils/constants";
 function Notification() {
 	const dispatch = useDispatch();
 	const notifyRef = useRef<HTMLDivElement>(null);
@@ -17,6 +18,14 @@ function Notification() {
 	const handleClose = () => {
 		dispatch(unsetNotification());
 	};
+
+	useEffect(() => {
+		if (show) {
+			setTimeout(() => {
+				dispatch(unsetNotification());
+			}, NOTIFICATION_TIME);
+		}
+	}, [show]);
 	return (
 		<>
 			{show && (
@@ -32,7 +41,6 @@ function Notification() {
 						<span onClick={handleClose}>X</span>
 						<div className='content'>
 							{message}
-
 							{link && (
 								<Link to={link.to}>{" " + link.content}</Link>
 							)}

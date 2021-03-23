@@ -1,3 +1,4 @@
+@import "../../style/theme.scss";
 .user-sidebar-container {
 	.user-sidebar {
 		margin: 0;
@@ -5,8 +6,10 @@
 		width: 20%;
 		border-radius: 15px;
 
-		border: 1px solid rgba(128, 128, 128, 0.404);
+		border: 1px solid rgba(128, 128, 128, 0.281);
+		box-shadow: $box-shadow-medium;
 		// position: fixed;
+
 		height: 75%;
 		overflow: auto;
 		@media screen and (max-width: 700px) {

@@ -1,6 +1,6 @@
 import { Row, Col } from "react-bootstrap";
 import UserLayout from "../../../layouts/userLayout/UserLayout";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { DropTargetMonitor } from "react-dnd";
 import { NativeTypes } from "react-dnd-html5-backend";
 import "./addProduct.scss";
@@ -34,6 +34,7 @@ function AddProduct() {
 
 	const accepts = useMemo(() => [FILE], []);
 	const dispatch = useDispatch();
+	const wrapperRef = useRef<HTMLDivElement>(null);
 	/**
 	 * Checks product inputs and submits if there is no input error
 	 */
@@ -52,7 +53,8 @@ function AddProduct() {
 		} else if (uploadedFiles.length === 0) {
 			setError("You should upload at least one image");
 		} else {
-			setLoading(true);
+			setLoadingActions();
+
 			setError("");
 			try {
 				const detailsResponse = await backend({
@@ -73,7 +75,7 @@ function AddProduct() {
 
 					if (imageResponse.status === 201) {
 						//TODO Push to myProductsPage
-						setLoading(false);
+						unsetLoadingActions();
 
 						setUploadedFiles([]);
 						setProductDetails({
@@ -86,11 +88,11 @@ function AddProduct() {
 						generateSuccessNotification();
 					} else {
 						setError(GENERIC_ERROR_MSG);
-						setLoading(false);
+						unsetLoadingActions();
 					}
 				} else {
 					setError(GENERIC_ERROR_MSG);
-					setLoading(false);
+					unsetLoadingActions();
 				}
 			} catch (error) {
 				setError("Something went wrong");
@@ -113,9 +115,8 @@ function AddProduct() {
 		setError("");
 		if (monitor) {
 			const uploadedImage = monitor.getItem<{ files: File[] }>().files;
-			console.log("image is: ", uploadedImage);
 
-			const foundImage = isImageExist(uploadedImage);
+			const foundImage = hasImageExist(uploadedImage);
 			if (foundImage) {
 				setImgWarning(true);
 			} else {
@@ -127,9 +128,9 @@ function AddProduct() {
 	const handleNormalUpload = (e: any) => {
 		setImgWarning(false);
 		setError("");
-		const uploadedImage = [e.target.files[0]];
+		const uploadedImage = new Array(e.target.files[0]);
 
-		const foundImage = isImageExist(uploadedImage);
+		const foundImage = hasImageExist(uploadedImage);
 		if (foundImage) {
 			setImgWarning(true);
 		} else {
@@ -145,7 +146,7 @@ function AddProduct() {
 		setUploadedFiles(newFiles);
 	};
 
-	const isImageExist = (uploadedImage: File[]) => {
+	const hasImageExist = (uploadedImage: File[]) => {
 		const foundImage = uploadedFiles.find(
 			(file) =>
 				file[0].name === uploadedImage[0].name &&
@@ -172,6 +173,16 @@ function AddProduct() {
 			link: { to: "/myProducts", content: "my products" },
 		};
 		dispatch(setNotification(notify));
+	};
+
+	const setLoadingActions = () => {
+		setLoading(true);
+		wrapperRef.current?.classList.add("loading");
+	};
+
+	const unsetLoadingActions = () => {
+		setLoading(false);
+		wrapperRef.current?.classList.remove("loading");
 	};
 	const showImagePreviews = () => {
 		return (
@@ -289,9 +300,7 @@ function AddProduct() {
 		);
 	};
 	return (
-		<div
-			className='add-product-container'
-			style={{ opacity: `${loading ? "0.5" : "1"}` }}>
+		<div ref={wrapperRef} className='add-product-container'>
 			<UserLayout>
 				<Row>
 					<Col md={6} sm={12}>
@@ -316,4 +325,4 @@ function AddProduct() {
 	);
 }
 
-export default React.memo(AddProduct);
+export default AddProduct;
