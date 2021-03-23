@@ -3,12 +3,13 @@
 	label {
 		float: left;
 		margin: 0;
-		font-size: 1rem;
+		font-size: 0.8rem;
 		color: $basic-text-color;
-		font-weight: 600;
+		font-weight: 400;
 	}
 
-	input {
+	input,
+	textarea {
 		outline: none;
 		border: none;
 		width: 100%;

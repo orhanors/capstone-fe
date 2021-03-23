@@ -1,18 +1,33 @@
-import React, { CSSProperties } from "react";
 import "./inputArea.scss";
 interface Props {
-	onChange: any;
-	type: string;
+	onChange: (e: any) => void;
+	type: "text" | "number" | "textarea" | "email" | "password";
 	value: any;
-	style: CSSProperties;
-	id: string;
+	name: string;
 	label: string;
+	required?: boolean;
 }
-function InputArea() {
+function InputArea(props: Props) {
 	return (
-		<div className='input-area-container'>
-			<label htmlFor='test'>Test</label>
-			<input type='text' id='test' />
+		<div className='input-area-container my-2'>
+			<label htmlFor='test'>
+				{props.label} {props.required ? "*" : ""}
+			</label>
+			{props.type === "textarea" ? (
+				<textarea
+					onChange={props.onChange}
+					value={props.value}
+					name={props.name}
+					rows={3}
+				/>
+			) : (
+				<input
+					onChange={props.onChange}
+					type={props.type}
+					value={props.value}
+					name={props.name}
+				/>
+			)}
 		</div>
 	);
 }

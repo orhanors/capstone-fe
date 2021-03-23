@@ -9,12 +9,22 @@ import UploadImage from "../../../components/uploadImage/UploadImage";
 import ShowImagePreview from "../../../components/uploadImage/ShowImagePreview";
 import { MAX_IMG_SIZE } from "../../../utils/constants";
 import FileInput from "../../../components/_common/fileInput/FileInput";
+import { IProductDetails } from "../../../types/product.types.d";
+import { validateInput } from "../../../utils/validateInput";
 
 const { FILE } = NativeTypes;
 function AddProduct() {
 	const [uploadedFiles, setUploadedFiles] = useState<Array<File[]>>([]);
+	const [productDetails, setProductDetails] = useState<IProductDetails>({
+		name: "",
+		description: "",
+		brand: "",
+		price: 0,
+		quantity: 0,
+	});
+	const [error, setError] = useState("");
 	const accepts = useMemo(() => [FILE], []);
-	const [warning, setWarning] = useState(false);
+	const [imgWarning, setImgWarning] = useState(false);
 
 	const isImageExist = (uploadedImage: File[]) => {
 		const foundImage = uploadedFiles.find(
@@ -26,26 +36,28 @@ function AddProduct() {
 		return foundImage;
 	};
 	const handleFileDrop = (item: any, monitor: DropTargetMonitor) => {
-		setWarning(false);
+		setImgWarning(false);
+		setError("");
 		if (monitor) {
 			const uploadedImage = monitor.getItem<{ files: File[] }>().files;
 			console.log("image is: ", uploadedImage);
 
 			const foundImage = isImageExist(uploadedImage);
 			if (foundImage) {
-				setWarning(true);
+				setImgWarning(true);
 			} else {
 				setUploadedFiles([...uploadedFiles, uploadedImage]);
 			}
 		}
 	};
 	const handleNormalUpload = (e: any) => {
-		setWarning(false);
+		setImgWarning(false);
+		setError("");
 		const uploadedImage = [e.target.files[0]];
 
 		const foundImage = isImageExist(uploadedImage);
 		if (foundImage) {
-			setWarning(true);
+			setImgWarning(true);
 		} else {
 			setUploadedFiles([...uploadedFiles, uploadedImage]);
 		}
@@ -58,7 +70,7 @@ function AddProduct() {
 		const newFiles = uploadedFiles.filter(
 			(file) => file[0].name !== e.target.id
 		);
-		setWarning(false);
+		setImgWarning(false);
 		setUploadedFiles(newFiles);
 	};
 	const handleImagePreview = () => {
@@ -88,11 +100,86 @@ function AddProduct() {
 			</div>
 		);
 	};
+	const handleInputChange = (e: any) => {
+		setError("");
+		setProductDetails({
+			...productDetails,
+			[e.target.name]: e.target.value,
+		});
+	};
 
+	const handleSubmitProductDetails = () => {
+		const { name, brand, description, price, quantity } = productDetails;
+		const isError = validateInput(
+			{
+				name,
+				brand,
+				description,
+				price: String(price),
+				quantity: String(quantity),
+			}
+			//true
+		);
+
+		if (isError) {
+			setError(isError);
+		} else if (uploadedFiles.length === 0) {
+			setError("You should upload at least one image");
+		}
+	};
 	const getProductInfo = () => {
+		const { name, brand, description, price, quantity } = productDetails;
 		return (
 			<div className='product-info p-5'>
-				<InputArea />
+				{error && (
+					<p className='text-center w-100 text-danger'>{error}</p>
+				)}
+				<InputArea
+					required
+					name='name'
+					onChange={handleInputChange}
+					value={name}
+					label='Name'
+					type='text'
+				/>
+
+				<InputArea
+					required
+					name='brand'
+					onChange={handleInputChange}
+					value={brand}
+					label='Brand'
+					type='text'
+				/>
+
+				<InputArea
+					required
+					name='price'
+					onChange={handleInputChange}
+					value={price}
+					label='Price'
+					type='number'
+				/>
+
+				<InputArea
+					required
+					name='quantity'
+					onChange={handleInputChange}
+					value={quantity}
+					label='Quantity'
+					type='number'
+				/>
+
+				<InputArea
+					required
+					name='description'
+					onChange={handleInputChange}
+					value={description}
+					label='Description'
+					type='textarea'
+				/>
+
+				<button onClick={handleSubmitProductDetails}>submit</button>
 			</div>
 		);
 	};
@@ -113,7 +200,7 @@ function AddProduct() {
 							You can upload maximum 6 images!
 						</p>
 
-						{warning && (
+						{imgWarning && (
 							<p className='text-center w-100 text-danger'>
 								Image already exist!
 							</p>

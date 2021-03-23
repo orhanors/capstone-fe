@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { apiCall } from "../api/api";
-import { IUserStore, IUser } from "./user.types.d";
+import { IUserStore, IUser } from "../../types/user.types";
 
 const initialUser = {
 	_id: "",
