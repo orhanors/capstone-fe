@@ -2,7 +2,7 @@ import React from "react";
 import { Spinner } from "react-bootstrap";
 
 interface Props {
-	size: "sm" | undefined;
+	size?: "sm" | undefined;
 }
 function BasicLoader(props: Props) {
 	return (

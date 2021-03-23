@@ -16,6 +16,7 @@ import Seller from "../pages/user/Seller";
 import Home from "../pages/home/Home";
 import AddProduct from "../pages/user/addProduct/AddProduct";
 import MyProducts from "../pages/user/MyProducts";
+import Notification from "../components/_common/notification/Notification";
 
 function App() {
 	const { i18n } = useTranslation();
@@ -28,6 +29,7 @@ function App() {
 			<Router>
 				<DndProvider backend={HTML5Backend}>
 					<NavBar />
+					<Notification />
 					<Route path='/login' exact component={Auth} />
 					<ProtectedRoute path='/' exact component={Home} />
 					<ProtectedRoute

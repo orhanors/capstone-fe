@@ -7,14 +7,19 @@ import "./addProduct.scss";
 import InputArea from "../../../components/_common/input/InputArea";
 import UploadImage from "../../../components/uploadImage/UploadImage";
 import ShowImagePreview from "../../../components/uploadImage/ShowImagePreview";
-import { MAX_IMG_SIZE } from "../../../utils/constants";
+import { GENERIC_ERROR_MSG, MAX_IMG_SIZE } from "../../../utils/constants";
 import FileInput from "../../../components/_common/fileInput/FileInput";
-import { IProductDetails } from "../../../types/product.types.d";
+import { IProductDetails } from "../../../types/product";
 import { validateInput } from "../../../utils/validateInput";
+import { backend } from "../../../utils/backend";
+import BasicLoader from "../../../loaders/spinner/BasicLoader";
+import { Link } from "react-router-dom";
+import Notification from "../../../components/_common/notification/Notification";
+import { useDispatch } from "react-redux";
+import { setNotification } from "../../../store/notification/notification";
 
 const { FILE } = NativeTypes;
 function AddProduct() {
-	const [uploadedFiles, setUploadedFiles] = useState<Array<File[]>>([]);
 	const [productDetails, setProductDetails] = useState<IProductDetails>({
 		name: "",
 		description: "",
@@ -22,19 +27,87 @@ function AddProduct() {
 		price: 0,
 		quantity: 0,
 	});
+	const [uploadedFiles, setUploadedFiles] = useState<Array<File[]>>([]);
 	const [error, setError] = useState("");
-	const accepts = useMemo(() => [FILE], []);
 	const [imgWarning, setImgWarning] = useState(false);
+	const [loading, setLoading] = useState(false);
 
-	const isImageExist = (uploadedImage: File[]) => {
-		const foundImage = uploadedFiles.find(
-			(file) =>
-				file[0].name === uploadedImage[0].name &&
-				file[0].size === uploadedImage[0].size
-		);
+	const accepts = useMemo(() => [FILE], []);
+	const dispatch = useDispatch();
+	/**
+	 * Checks product inputs and submits if there is no input error
+	 */
+	const handleSubmitProductDetails = async () => {
+		const { name, brand, description, price, quantity } = productDetails;
+		const inputWarning = validateInput({
+			name,
+			brand,
+			description,
+			price: String(price),
+			quantity: String(quantity),
+		});
 
-		return foundImage;
+		if (inputWarning) {
+			setError(inputWarning);
+		} else if (uploadedFiles.length === 0) {
+			setError("You should upload at least one image");
+		} else {
+			setLoading(true);
+			setError("");
+			try {
+				const detailsResponse = await backend({
+					url: "/products",
+					method: "post",
+					data: productDetails,
+				});
+				if (detailsResponse.status === 201) {
+					const formData = convertArrayToForm();
+					const imageResponse = await backend({
+						url: `/products/upload/images/${detailsResponse.data.productId}`,
+						data: formData,
+						method: "post",
+						headers: {
+							"content-type": "multipart/form-data",
+						},
+					});
+
+					if (imageResponse.status === 201) {
+						//TODO Push to myProductsPage
+						setLoading(false);
+
+						setUploadedFiles([]);
+						setProductDetails({
+							name: "",
+							description: "",
+							brand: "",
+							price: 0,
+							quantity: 0,
+						});
+						generateSuccessNotification();
+					} else {
+						setError(GENERIC_ERROR_MSG);
+						setLoading(false);
+					}
+				} else {
+					setError(GENERIC_ERROR_MSG);
+					setLoading(false);
+				}
+			} catch (error) {
+				setError("Something went wrong");
+				setLoading(false);
+				console.log("detailsResponse.data: ", error.response.data);
+			}
+		}
 	};
+
+	const handleInputChange = (e: any) => {
+		setError("");
+		setProductDetails({
+			...productDetails,
+			[e.target.name]: e.target.value,
+		});
+	};
+
 	const handleFileDrop = (item: any, monitor: DropTargetMonitor) => {
 		setImgWarning(false);
 		setError("");
@@ -50,6 +123,7 @@ function AddProduct() {
 			}
 		}
 	};
+
 	const handleNormalUpload = (e: any) => {
 		setImgWarning(false);
 		setError("");
@@ -63,9 +137,6 @@ function AddProduct() {
 		}
 	};
 
-	const isDroppable = () => {
-		return uploadedFiles.length < MAX_IMG_SIZE;
-	};
 	const handleDeleteImage = (e: any) => {
 		const newFiles = uploadedFiles.filter(
 			(file) => file[0].name !== e.target.id
@@ -73,7 +144,36 @@ function AddProduct() {
 		setImgWarning(false);
 		setUploadedFiles(newFiles);
 	};
-	const handleImagePreview = () => {
+
+	const isImageExist = (uploadedImage: File[]) => {
+		const foundImage = uploadedFiles.find(
+			(file) =>
+				file[0].name === uploadedImage[0].name &&
+				file[0].size === uploadedImage[0].size
+		);
+
+		return foundImage;
+	};
+
+	const isDroppable = () => {
+		return uploadedFiles.length < MAX_IMG_SIZE;
+	};
+	const convertArrayToForm = () => {
+		const formData = new FormData();
+		uploadedFiles.forEach((file) => {
+			formData.append("product", file[0]);
+		});
+
+		return formData;
+	};
+	const generateSuccessNotification = () => {
+		const notify = {
+			message: "Successfully created! Go to",
+			link: { to: "/myProducts", content: "my products" },
+		};
+		dispatch(setNotification(notify));
+	};
+	const showImagePreviews = () => {
 		return (
 			<div className='img-previews-container mx-3 my-3'>
 				<Row>
@@ -100,33 +200,37 @@ function AddProduct() {
 			</div>
 		);
 	};
-	const handleInputChange = (e: any) => {
-		setError("");
-		setProductDetails({
-			...productDetails,
-			[e.target.name]: e.target.value,
-		});
-	};
 
-	const handleSubmitProductDetails = () => {
-		const { name, brand, description, price, quantity } = productDetails;
-		const isError = validateInput(
-			{
-				name,
-				brand,
-				description,
-				price: String(price),
-				quantity: String(quantity),
-			}
-			//true
+	const getProductImgs = () => {
+		return (
+			<div className='product-images'>
+				{isDroppable() && (
+					<>
+						<div className='img-upload-options'>
+							<UploadImage
+								accepts={accepts}
+								onDrop={handleFileDrop}>
+								<FileInput onChange={handleNormalUpload} />
+							</UploadImage>
+						</div>
+
+						<p className='text-center w-100 text-secondary'>
+							You can upload maximum 6 images!
+						</p>
+
+						{imgWarning && (
+							<p className='text-center w-100 text-danger'>
+								Image already exist!
+							</p>
+						)}
+					</>
+				)}
+
+				{showImagePreviews()}
+			</div>
 		);
-
-		if (isError) {
-			setError(isError);
-		} else if (uploadedFiles.length === 0) {
-			setError("You should upload at least one image");
-		}
 	};
+
 	const getProductInfo = () => {
 		const { name, brand, description, price, quantity } = productDetails;
 		return (
@@ -134,6 +238,7 @@ function AddProduct() {
 				{error && (
 					<p className='text-center w-100 text-danger'>{error}</p>
 				)}
+
 				<InputArea
 					required
 					name='name'
@@ -183,44 +288,27 @@ function AddProduct() {
 			</div>
 		);
 	};
-	const getProductImgs = () => {
-		return (
-			<div className='product-images'>
-				{isDroppable() && (
-					<>
-						<div className='img-upload-options'>
-							<UploadImage
-								accepts={accepts}
-								onDrop={handleFileDrop}>
-								<FileInput onChange={handleNormalUpload} />
-							</UploadImage>
-						</div>
-
-						<p className='text-center w-100 text-secondary'>
-							You can upload maximum 6 images!
-						</p>
-
-						{imgWarning && (
-							<p className='text-center w-100 text-danger'>
-								Image already exist!
-							</p>
-						)}
-					</>
-				)}
-
-				{handleImagePreview()}
-			</div>
-		);
-	};
 	return (
-		<div className='add-product-container'>
+		<div
+			className='add-product-container'
+			style={{ opacity: `${loading ? "0.5" : "1"}` }}>
 			<UserLayout>
 				<Row>
 					<Col md={6} sm={12}>
 						{getProductInfo()}
+						{loading && (
+							<div className='loader-container'>
+								<BasicLoader />
+							</div>
+						)}
 					</Col>
 					<Col md={6} sm={12}>
 						{getProductImgs()}
+						{loading && (
+							<div className='loader-container'>
+								<BasicLoader />
+							</div>
+						)}
 					</Col>
 				</Row>
 			</UserLayout>

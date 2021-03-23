@@ -10,7 +10,7 @@ export const validateInput = (
 		//field==="0" means empty number
 		if (isEmpty(value) || value === "0") {
 			if (allRequired) return "All fields are required!";
-			return `${field} is required!`;
+			return `Ooops! "${field}" field is required`;
 		}
 	}
 

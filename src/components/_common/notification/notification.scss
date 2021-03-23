@@ -1,0 +1,55 @@
+@import "../../../style/theme.scss";
+.notification-wrapper {
+	position: fixed;
+	background-color: rgb(9, 190, 9);
+	color: rgba(253, 253, 253, 0.925);
+	bottom: 1rem;
+	left: 1rem;
+	overflow-wrap: break-word;
+	min-width: 15rem;
+	max-width: 25rem;
+	border-radius: 10px;
+	font-size: 0.8rem;
+	font-weight: 500;
+
+	.notify-content-wrapper {
+		position: relative;
+		padding-bottom: 1rem;
+		padding-top: 1rem;
+		padding-left: 0.4rem;
+		padding-right: 0.4rem;
+		width: 100%;
+		height: 100%;
+
+		.content {
+			width: 100%;
+
+			a {
+				color: rgb(43, 43, 43);
+			}
+		}
+
+		span {
+			position: absolute;
+			top: 0;
+
+			right: 0;
+			font-size: 0.7rem;
+			font-weight: 600;
+			color: $basic-text-color;
+			border-radius: 50%;
+			border: 1px solid black;
+			background-color: $basic-gray;
+			padding-right: 0.2rem;
+			padding-left: 0.2rem;
+
+			transition: 0.1s;
+			&:hover {
+				cursor: pointer;
+				transform: scale(1.3);
+				background-color: gray;
+				color: white;
+			}
+		}
+	}
+}
