@@ -22,6 +22,7 @@ const UploadImage: FC<TargetBoxProps> = ({
 	canDrop,
 	isOver,
 	connectDropTarget,
+	children,
 }) => {
 	const isActive = canDrop && isOver;
 
@@ -32,7 +33,7 @@ const UploadImage: FC<TargetBoxProps> = ({
 				backgroundColor: `${isActive ? "gray" : ""}`,
 				opacity: `${isActive ? "0.6" : "1"}`,
 			}}>
-			{/* {!isActive && <FileInput dnd text='Upload product image' />} */}
+			{!isActive && children}
 		</div>
 	);
 };

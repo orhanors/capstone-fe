@@ -4,6 +4,7 @@ import "./fileInput.scss";
 interface Props {
 	dnd?: boolean;
 	text?: string;
+	onChange: (e: any) => void;
 }
 function FileInput(props: Props) {
 	return (
@@ -12,6 +13,7 @@ function FileInput(props: Props) {
 			{props.dnd && <small>{props.text}</small>}
 
 			<input
+				onChange={props.onChange}
 				className='file-input'
 				id='file-input-upload'
 				type='file'
