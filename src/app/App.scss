@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600&display=swap");
 @import "../style/text-animation.scss";
+@import "../style/theme.scss";
 * {
 	margin: 0;
 	padding: 0;
@@ -10,8 +11,31 @@ html {
 }
 body {
 	font-family: "Oswald", sans-serif;
-	margin-top: 2vh;
-	margin-left: 4vw;
-	margin-right: 4vw;
-	transition: 0.5s;
+	// margin-top: 2vh;
+	// margin-left: 4vw;
+	// margin-right: 4vw;
+	transition: 0.3s;
+}
+
+p {
+	font-size: 0.8rem;
+	color: $basic-text-color;
+}
+
+p.bold {
+	font-weight: 700;
+}
+
+button {
+	border: none;
+	padding-right: 1rem;
+	padding-left: 1rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+a {
+	text-decoration: none;
+
+	color: black;
 }

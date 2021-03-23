@@ -58,7 +58,7 @@ function NavBar() {
 			}
 			<div
 				ref={navRef}
-				className='nav-container d-flex justify-content-between'>
+				className='nav-container container d-flex justify-content-between'>
 				<div className='nav-portion d-flex justify-content-between'>
 					<span className='nav-icon mx-2'>
 						<FacebookLogo color={iconColor} />
@@ -104,7 +104,7 @@ function NavBar() {
 						{t("navbar.contact")}
 					</p>
 				</div>
-				<div className='nav-portion d-flex justify-content-between'>
+				<div className='nav-portion d-flex justify-content-between mt-3'>
 					<span
 						onClick={() => dispatch(setSearchSidebar())}
 						className='nav-icon mx-2'>
