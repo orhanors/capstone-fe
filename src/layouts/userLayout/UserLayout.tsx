@@ -14,7 +14,7 @@ function UserLayout({ children, to }: Props) {
 	const { user } = useSelector((store) => store);
 
 	return (
-		<div className='user-sidebar-container container d-md-flex'>
+		<div className='user-sidebar-container container d-md-flex mt-4'>
 			<div className='user-sidebar mt-2'>
 				{user.data.role === USER_ROLES.seller && <SellerPages />}
 

@@ -7,47 +7,50 @@ import "./addProduct.scss";
 import InputArea from "../../../components/_common/input/InputArea";
 import UploadImage from "../../../components/uploadImage/UploadImage";
 import ShowImagePreview from "../../../components/uploadImage/ShowImagePreview";
-import { GENERIC_ERROR_MSG, MAX_IMG_SIZE } from "../../../utils/constants";
+import {
+	GENERIC_ERROR_MSG,
+	MAX_IMG_SIZE,
+	PRODUCT_CATEGORIES,
+	PRODUCT_TYPES,
+} from "../../../utils/constants";
 import FileInput from "../../../components/_common/fileInput/FileInput";
 import { IProductDetails } from "../../../types/product";
 import { validateInput } from "../../../utils/validateInput";
 import { backend } from "../../../utils/backend";
 import BasicLoader from "../../../loaders/spinner/BasicLoader";
-import { Link } from "react-router-dom";
-import Notification from "../../../components/_common/notification/Notification";
+
 import { useDispatch } from "react-redux";
 import { setNotification } from "../../../store/notification/notification";
 
 const { FILE } = NativeTypes;
 function AddProduct() {
-	const [productDetails, setProductDetails] = useState<IProductDetails>({
+	const initialProductState = {
 		name: "",
 		description: "",
 		brand: "",
 		price: 0,
+		category: PRODUCT_CATEGORIES[0],
+		type: PRODUCT_TYPES[0],
 		quantity: 0,
-	});
+	};
+	const [productDetails, setProductDetails] = useState<IProductDetails>(
+		initialProductState
+	);
 	const [uploadedFiles, setUploadedFiles] = useState<Array<File[]>>([]);
 	const [error, setError] = useState("");
 	const [imgWarning, setImgWarning] = useState(false);
 	const [loading, setLoading] = useState(false);
-
+	const [pageDetail, setPageDetail] = useState(1);
 	const accepts = useMemo(() => [FILE], []);
 	const dispatch = useDispatch();
 	const wrapperRef = useRef<HTMLDivElement>(null);
 	/**
 	 * Checks product inputs and submits if there is no input error
 	 */
-	const handleSubmitProductDetails = async () => {
-		const { name, brand, description, price, quantity } = productDetails;
-		const inputWarning = validateInput({
-			name,
-			brand,
-			description,
-			price: String(price),
-			quantity: String(quantity),
-		});
 
+	const handleSubmitProductDetails = async () => {
+		const { description } = productDetails;
+		const inputWarning = validateInput({ description });
 		if (inputWarning) {
 			setError(inputWarning);
 		} else if (uploadedFiles.length === 0) {
@@ -78,13 +81,7 @@ function AddProduct() {
 						unsetLoadingActions();
 
 						setUploadedFiles([]);
-						setProductDetails({
-							name: "",
-							description: "",
-							brand: "",
-							price: 0,
-							quantity: 0,
-						});
+						setProductDetails(initialProductState);
 						generateSuccessNotification();
 					} else {
 						setError(GENERIC_ERROR_MSG);
@@ -95,8 +92,8 @@ function AddProduct() {
 					unsetLoadingActions();
 				}
 			} catch (error) {
-				setError("Something went wrong");
-				setLoading(false);
+				setError(GENERIC_ERROR_MSG);
+				unsetLoadingActions();
 				console.log("detailsResponse.data: ", error.response.data);
 			}
 		}
@@ -242,14 +239,10 @@ function AddProduct() {
 		);
 	};
 
-	const getProductInfo = () => {
-		const { name, brand, description, price, quantity } = productDetails;
+	const getProductInfo1 = () => {
+		const { name, brand, price, quantity } = productDetails;
 		return (
-			<div className='product-info p-5'>
-				{error && (
-					<p className='text-center w-100 text-danger'>{error}</p>
-				)}
-
+			<>
 				<InputArea
 					required
 					name='name'
@@ -286,6 +279,48 @@ function AddProduct() {
 					type='number'
 				/>
 
+				<button
+					onClick={() => {
+						const inputWarning = validateInput({
+							name,
+							brand,
+							price: String(price),
+							quantity: String(quantity),
+						});
+						inputWarning
+							? setError(inputWarning)
+							: setPageDetail(pageDetail + 1);
+					}}>
+					next
+				</button>
+			</>
+		);
+	};
+
+	const getProductInfo2 = () => {
+		const { description } = productDetails;
+
+		return (
+			<>
+				<label htmlFor='p-category'>Category</label>
+				<select
+					id='p-category'
+					name='category'
+					onChange={handleInputChange}>
+					{PRODUCT_CATEGORIES.map((category) => {
+						return <option>{category}</option>;
+					})}
+				</select>
+
+				<label htmlFor='p-category'>Type</label>
+				<select
+					id='p-category'
+					name='type'
+					onChange={handleInputChange}>
+					{PRODUCT_TYPES.map((type) => {
+						return <option>{type}</option>;
+					})}
+				</select>
 				<InputArea
 					required
 					name='description'
@@ -294,9 +329,13 @@ function AddProduct() {
 					label='Description'
 					type='textarea'
 				/>
-
-				<button onClick={handleSubmitProductDetails}>submit</button>
-			</div>
+				<div className='d-flex justify-content-between'>
+					<button onClick={() => setPageDetail(pageDetail - 1)}>
+						prev
+					</button>
+					<button onClick={handleSubmitProductDetails}>submit</button>
+				</div>
+			</>
 		);
 	};
 	return (
@@ -304,7 +343,15 @@ function AddProduct() {
 			<UserLayout>
 				<Row>
 					<Col md={6} sm={12}>
-						{getProductInfo()}
+						<div className='product-info p-5'>
+							{error && (
+								<p className='text-center w-100 text-danger'>
+									{error}
+								</p>
+							)}
+							{pageDetail === 1 && getProductInfo1()}
+							{pageDetail === 2 && getProductInfo2()}
+						</div>
 						{loading && (
 							<div className='loader-container'>
 								<BasicLoader />

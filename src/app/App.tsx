@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import NavBar from "../components/navBar/NavBar";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import Products from "../components/products/Products";
+
 import Auth from "../pages/auth/Auth/Auth";
 
 import ProtectedRoute from "./ProtectedRoute";
@@ -17,6 +17,7 @@ import Home from "../pages/home/Home";
 import AddProduct from "../pages/user/addProduct/AddProduct";
 import MyProducts from "../pages/user/MyProducts";
 import Notification from "../components/_common/notification/Notification";
+import Products from "../pages/products/Products";
 
 function App() {
 	const { i18n } = useTranslation();
@@ -41,6 +42,11 @@ function App() {
 						path='/myProducts'
 						exact
 						component={MyProducts}
+					/>
+					<ProtectedRoute
+						path='/products'
+						exact
+						component={Products}
 					/>
 					<ProtectedRoute path='/seller' exact component={Seller} />
 				</DndProvider>

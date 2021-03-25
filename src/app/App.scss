@@ -38,4 +38,28 @@ a {
 	text-decoration: none;
 
 	color: black;
+
+	&:hover {
+		text-decoration: none;
+	}
+}
+select {
+	padding-left: 0.7rem;
+	width: 100%;
+	height: 3rem;
+	border: $thin-border;
+	outline: none;
+	font-size: 0.8rem;
+	color: $basic-text-color;
+	background-color: $input-gray;
+	&:focus {
+		border: none !important;
+	}
+}
+label {
+	float: left;
+	margin: 0;
+	font-size: 0.8rem;
+	color: $basic-text-color;
+	font-weight: 400;
 }
