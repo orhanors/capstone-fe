@@ -189,7 +189,7 @@ function AddProduct() {
 						return (
 							<Col
 								key={file[0].name + file[0].size}
-								md={isDroppable() ? 4 : 6}
+								md={isDroppable() ? 6 : 6}
 								sm={12}>
 								<div className='img-preview'>
 									<ShowImagePreview
@@ -223,7 +223,7 @@ function AddProduct() {
 						</div>
 
 						<p className='text-center w-100 text-secondary'>
-							You can upload maximum 6 images!
+							You can upload maximum {MAX_IMG_SIZE} images!
 						</p>
 
 						{imgWarning && (
