@@ -1,10 +1,12 @@
-import React from "react";
+import React, { Suspense } from "react";
+import Landing from "../../components/landing/Landing";
+
 import MainCarousel from "../../components/mainCarousel/MainCarousel";
 
 function Home() {
 	return (
 		<div>
-			<div className='my-5'>{/* <MainCarousel /> */}</div>
+			<Landing />
 		</div>
 	);
 }
