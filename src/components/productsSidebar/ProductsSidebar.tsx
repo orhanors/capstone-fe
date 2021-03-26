@@ -75,7 +75,9 @@ function ProductsSidebar() {
 					ref={drop}
 					className='products'
 					style={{
-						backgroundColor: `${isOver ? "green" : "inherit"}`,
+						backgroundColor: `${
+							isOver ? "rgba(209, 209, 209, 0.514)" : "inherit"
+						}`,
 					}}>
 					{getProducts()?.length > 0 &&
 						getProducts().map((product) => {
