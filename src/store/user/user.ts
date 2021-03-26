@@ -10,8 +10,8 @@ const initialUser = {
 	surname: "",
 	image: "",
 	email: "",
-	createdAt: new Date("2021-03-22T11:31:00.542Z"),
-	updatedAt: new Date("2021-03-22T11:31:00.542Z"),
+	createdAt: "2021-03-22T11:31:00.542Z",
+	updatedAt: "2021-03-22T11:31:00.542Z",
 };
 const initialState: IUserStore = {
 	data: initialUser,

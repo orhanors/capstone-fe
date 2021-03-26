@@ -1,5 +1,6 @@
 //GENERAL
 $basic-text-color: rgb(75, 75, 75);
+$basic-hover-color: rgb(236, 144, 6);
 $basic-dark: rgba(8, 8, 8, 0.877);
 $basic-gray: rgb(204, 204, 204);
 $theme-bg-color: white;
@@ -28,3 +29,5 @@ $box-shadow-medium: 0 10px 20px rgba(0, 0, 0, 0.19),
 
 //PRODUCTS PAGE
 $category-sidebar-bg: rgb(228, 228, 228);
+$product-icon-color: gray;
+$product-icon-hover-color: $basic-hover-color;

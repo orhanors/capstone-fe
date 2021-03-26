@@ -9,17 +9,25 @@ import { TiArrowBackOutline } from "react-icons/ti";
 import { useDrop } from "react-dnd";
 import "./prosidebar.scss";
 import { ItemTypes } from "../../utils/items";
+import {
+	addProductToCart,
+	getShoppingCart,
+} from "../../store/cart/shoppingCart";
+import { IProduct } from "../../types/product.d";
+import CartItem from "../cartItem/CartItem";
+import products from "../../store/products/products";
+import { IShoppingCart } from "../../types/cart";
+import BasicLoader from "../../loaders/spinner/BasicLoader";
 
 function ProductsSidebar() {
 	const dispatch = useDispatch();
-	const [cart, setCart] = useState([]);
-	const { productSidebar } = useSelector((state) => state);
+	const { productSidebar, cart } = useSelector((state) => state);
+	const { loading } = cart;
 	const [isDropped, setIsDropped] = useState(false);
 	const [{ isOver }, drop] = useDrop({
 		accept: ItemTypes.CARD,
-		drop: (item, monitor) => {
-			//@ts-ignore
-			setCart([...cart, item.name]);
+		drop: (item: IProduct, monitor) => {
+			dispatch(addProductToCart(item._id, item.price));
 		},
 		collect: (monitor: any) => ({
 			isOver: monitor.isOver(),
@@ -29,18 +37,28 @@ function ProductsSidebar() {
 	const sideWidth = "450px";
 	const sideRef = useRef<HTMLDivElement>(null);
 
+	// useEffect(() => {
+	// 	dispatch(getShoppingCart());
+	// }, []);
 	useEffect(() => {
 		if (productSidebar) {
 			sideRef.current!.style.width = sideWidth;
+			dispatch(getShoppingCart());
 		}
 	}, [productSidebar]);
 
 	useEffect(() => {
 		if (isDropped) {
 			dispatch(setProductSidebar());
+			dispatch(getShoppingCart());
 		}
 		console.log("isDropped", isDropped);
 	}, [isDropped]);
+
+	const getProducts = () => {
+		//console.log(cart?.data!.products);
+		return (cart.data as IShoppingCart)?.products;
+	};
 	return (
 		<div ref={sideRef} id='mySidebar' className='sidebar'>
 			<span
@@ -48,14 +66,31 @@ function ProductsSidebar() {
 				onClick={() => dispatch(unsetProductSidebar())}>
 				<TiArrowBackOutline />
 			</span>
-			<div
-				ref={drop}
-				className='products'
-				style={{ backgroundColor: `${isOver ? "green" : "inherit"}` }}>
-				{cart.map((item) => (
-					<h4 key={item}>{item}</h4>
-				))}
-			</div>
+			{loading ? (
+				<div className='d-flex justify-content-center align-items-center w-100 h-100'>
+					<BasicLoader variant='warning' animation='grow' />
+				</div>
+			) : (
+				<div
+					ref={drop}
+					className='products'
+					style={{
+						backgroundColor: `${
+							isOver ? "rgba(209, 209, 209, 0.514)" : "inherit"
+						}`,
+					}}>
+					{getProducts()?.length > 0 &&
+						getProducts().map((product) => {
+							return (
+								<CartItem
+									//refresh={}
+									key={product._id}
+									productInfo={product}
+								/>
+							);
+						})}
+				</div>
+			)}
 		</div>
 	);
 }

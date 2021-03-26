@@ -12,6 +12,6 @@ export interface IUser {
 	surname: string;
 	image: string;
 	email: string;
-	createdAt: Date;
-	updatedAt: Date;
+	createdAt: string;
+	updatedAt: string;
 }

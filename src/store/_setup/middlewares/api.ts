@@ -51,7 +51,7 @@ const api: Middleware = ({ dispatch }: MiddlewareAPI) => (
 		});
 
 		//General
-		dispatch(actions.apiCallSuccess(response.data));
+		//dispatch(actions.apiCallSuccess(response.data));
 		//Spesific
 		if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
 	} catch (error) {

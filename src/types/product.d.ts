@@ -2,10 +2,10 @@ import { IUser } from "./user";
 
 export interface IProduct extends IProductDetails {
 	_id: string;
-	images: any[];
+	images: Image[];
 	seller: IUser;
-	createdAt: Date;
-	updatedAt: Date;
+	createdAt: string;
+	updatedAt: string;
 }
 
 export interface IProductDetails {
@@ -16,4 +16,10 @@ export interface IProductDetails {
 	quantity: number;
 	category: string;
 	type: string;
+}
+
+interface Image {
+	_id: string;
+	url: string;
+	id: string;
 }
