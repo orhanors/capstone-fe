@@ -20,19 +20,6 @@ const arrowStyles: CSSProperties = {
 	color: "white",
 };
 function MainCarousel() {
-	const landingRef = useRef<HTMLDivElement>(null);
-
-	const addSelectedEffect = () => {
-		const elements = document.querySelectorAll(
-			".content-wrapper .landing-item"
-		);
-
-		elements.forEach((el) => {
-			el.classList.contains("selected") &&
-				el.classList.add("fadeInBottom");
-		});
-	};
-
 	return (
 		<div className='main-carousel'>
 			<Carousel
@@ -72,27 +59,42 @@ function MainCarousel() {
 				<div className='content-wrapper'>
 					<img alt='main' src={landing1} />
 					<div className={"landing-item landing1"}>
-						<p className='subtitle'>Quality First</p>
+						<p className='subtitle medium-title text-green'>
+							Quality First
+						</p>
 
-						<p className='title'> Medical Safety Gears </p>
+						<p className='title big-title text-black'>
+							{" "}
+							Medical Safety Gears{" "}
+						</p>
 						<button>View Products</button>
 					</div>
 				</div>
 				<div className=' content-wrapper'>
 					<img alt='main' src={landing2} />
 					<div className='landing-item landing2'>
-						<p className='subtitle'>Personal Health</p>
+						<p className='subtitle medium-title text-green'>
+							Personal Health
+						</p>
 
-						<p className='title'> Prevent The Spread Of Disease</p>
+						<p className='title big-title text-black'>
+							{" "}
+							Prevent The Spread Of Disease
+						</p>
 						<button>Wear a Mask</button>
 					</div>
 				</div>
 				<div className='landing-item content-wrapper'>
 					<img alt='main' src={landing3} />
 					<div className='landing3'>
-						<p className='subtitle'>Medical Devices</p>
+						<p className='subtitle medium-title text-green'>
+							Medical Devices
+						</p>
 
-						<p className='title'> For Medical Professional</p>
+						<p className='title big-title text-black'>
+							{" "}
+							For Medical Professional
+						</p>
 						<button>See Devices</button>
 					</div>
 				</div>
