@@ -1,10 +1,17 @@
-import React from "react";
-import MainCarousel from "../../components/mainCarousel/MainCarousel";
+import React, { Suspense } from "react";
+import AfterLandingInfo from "../../components/mainAfterLandingInfo/AfterLandingInfo";
 
+import Landing from "../../components/landing/Landing";
+import MainParalllax from "../../components/mainParallax/MainParalllax";
+
+import "./home.scss";
+import MainProductsInfo from "../../components/mainProductsInfo/MainProductsInfo";
 function Home() {
 	return (
 		<div>
-			<div className='my-5'>{/* <MainCarousel /> */}</div>
+			<Landing />
+			<AfterLandingInfo height='90vh' />
+			<MainProductsInfo />
 		</div>
 	);
 }

@@ -1,7 +1,11 @@
-import React, { Component, CSSProperties } from "react";
+import React, { Component, CSSProperties, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import landing1 from "../../assets/imgs/landing/landing1.webp";
+import landing2 from "../../assets/imgs/landing/landing2.webp";
+import landing3 from "../../assets/imgs/landing/landing3.webp";
+import "../../style/animations.scss";
 import "./carousel.scss";
 const arrowStyles: CSSProperties = {
 	position: "absolute",
@@ -20,17 +24,19 @@ function MainCarousel() {
 		<div className='main-carousel'>
 			<Carousel
 				showIndicators={false}
-				showThumbs={true}
-				showArrows={false}
+				showThumbs={false}
+				showArrows={true}
 				swipeable={true}
 				showStatus={false}
+				autoPlay={true}
+				infiniteLoop={true}
+				interval={5000} //milisecond
 				renderArrowPrev={(onClickHandler, hasPrev, label) =>
 					hasPrev && (
 						<button
 							type='button'
 							id='prevArrow'
 							onClick={onClickHandler}
-							title={label}
 							style={{ ...arrowStyles, left: 15 }}>
 							&#8249;
 						</button>
@@ -38,40 +44,59 @@ function MainCarousel() {
 				}
 				renderArrowNext={(onClickHandler, hasNext, label) =>
 					hasNext && (
-						<button
-							type='button'
-							id='nextArrow'
-							onClick={onClickHandler}
-							title={label}
-							style={{ ...arrowStyles, right: 15 }}>
-							&#8250;
-						</button>
+						<>
+							{console.log("hasNext: ", hasNext)}
+							<button
+								type='button'
+								id='nextArrow'
+								onClick={onClickHandler}
+								style={{ ...arrowStyles, right: 15 }}>
+								&#8250;
+							</button>
+						</>
 					)
 				}>
-				<div>
-					<img
-						alt='main'
-						src='https://s3.eu-north-1.amazonaws.com/semantix-com/content-images/_articleHeroBelow/medical-translations-1920x860.jpg?mtime=20200109140116&focal=none&tmtime=20200826145613'
-					/>
-					<p
-						style={{ backgroundColor: "red" }}
-						className='legend mb-5'>
-						Legend 1
-					</p>
+				<div className='content-wrapper'>
+					<img alt='main' src={landing1} />
+					<div className={"landing-item landing1"}>
+						<p className='subtitle medium-title text-green'>
+							Quality First
+						</p>
+
+						<p className='title big-title text-black'>
+							{" "}
+							Medical Safety Gears{" "}
+						</p>
+						<button>View Products</button>
+					</div>
 				</div>
-				<div>
-					<img
-						alt='main'
-						src='https://s3.eu-north-1.amazonaws.com/semantix-com/content-images/_articleHeroBelow/medical-translations-1920x860.jpg?mtime=20200109140116&focal=none&tmtime=20200826145613'
-					/>
-					<p className='legend'>Legend 2</p>
+				<div className=' content-wrapper'>
+					<img alt='main' src={landing2} />
+					<div className='landing-item landing2'>
+						<p className='subtitle medium-title text-green'>
+							Personal Health
+						</p>
+
+						<p className='title big-title text-black'>
+							{" "}
+							Prevent The Spread Of Disease
+						</p>
+						<button>Wear a Mask</button>
+					</div>
 				</div>
-				<div>
-					<img
-						alt='main'
-						src='https://s3.eu-north-1.amazonaws.com/semantix-com/content-images/_articleHeroBelow/medical-translations-1920x860.jpg?mtime=20200109140116&focal=none&tmtime=20200826145613'
-					/>
-					<p className='legend'>Legend 3</p>
+				<div className='landing-item content-wrapper'>
+					<img alt='main' src={landing3} />
+					<div className='landing3'>
+						<p className='subtitle medium-title text-green'>
+							Medical Devices
+						</p>
+
+						<p className='title big-title text-black'>
+							{" "}
+							For Medical Professional
+						</p>
+						<button>See Devices</button>
+					</div>
 				</div>
 			</Carousel>
 		</div>
