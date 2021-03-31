@@ -12,14 +12,18 @@ const slice = createSlice({
 	reducers: {
 		setNotification: (state, action: PayloadAction<INotification>) => ({
 			...state,
+			behavior: action.payload.behavior,
 			message: action.payload.message,
 			show: true,
 			link: action.payload.link,
+			undo: action.payload.undo,
+			product: action.payload.product,
 		}),
 		unsetNotification: (state) => ({
+			...state,
 			message: "",
 			show: false,
-			behavior: "good",
+			undo: false,
 		}),
 	},
 });

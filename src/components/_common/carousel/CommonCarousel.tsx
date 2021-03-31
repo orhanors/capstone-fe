@@ -58,7 +58,6 @@ function CommonCarousel(props: CarouselProps) {
 				renderArrowNext={(onClickHandler, hasNext, label) =>
 					hasNext && (
 						<>
-							{console.log("hasNext: ", hasNext)}
 							<button
 								type='button'
 								id='nextArrow'

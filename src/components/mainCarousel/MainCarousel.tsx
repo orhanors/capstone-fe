@@ -45,7 +45,6 @@ function MainCarousel() {
 				renderArrowNext={(onClickHandler, hasNext, label) =>
 					hasNext && (
 						<>
-							{console.log("hasNext: ", hasNext)}
 							<button
 								type='button'
 								id='nextArrow'

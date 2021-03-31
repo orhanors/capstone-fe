@@ -5,6 +5,7 @@ import searchSideReducer from "../../searchSidebar/searchSide";
 import notifyReducer from "../../notification/notification";
 import productsReducer from "../../products/products";
 import cartReducer from "../../cart/shoppingCart";
+
 const rootReducer = combineReducers({
 	user: userReducer,
 	productSidebar: productSideReducer,

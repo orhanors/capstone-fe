@@ -10,9 +10,9 @@ import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 const refreshAuthLogic = (failedRequest: any) =>
 	axios({
-		url: `http://localhost:3001/api/users/refreshToken`,
+		url: `http://localhost:3001/api/auth/refreshToken`,
 		withCredentials: true,
-		method: "get",
+		method: "post",
 	}).then((tokenRefreshResponse) => {
 		return Promise.resolve();
 	});

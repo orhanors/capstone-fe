@@ -20,13 +20,16 @@
 	.cart-item-img {
 		width: 60% !important;
 		height: 100%;
+		object-fit: cover;
 	}
 
 	.item-details {
 		width: 50%;
-
+		&:hover {
+			cursor: pointer;
+		}
 		.title {
-			font-size: 1.2rem;
+			font-size: 1.1rem;
 		}
 
 		.price {

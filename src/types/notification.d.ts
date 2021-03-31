@@ -1,6 +1,8 @@
 export interface INotification {
 	message: string;
 	link?: { to: string; content: string };
-	behavior?: "good" | "bad"; //Default "good"
+	undo?: boolean;
+	behavior?: "good" | "bad" | "warning" | string; //Default "good"
 	show?: boolean;
+	product?: { id: string; price: number; qty?: number };
 }

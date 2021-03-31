@@ -16,11 +16,23 @@
 			object-fit: cover;
 		}
 	}
+
+	.p-details {
+		padding-bottom: 1rem;
+		padding-left: 1rem;
+		padding-right: 1rem;
+		.p-name {
+			font-weight: 500;
+			font-size: 1rem;
+		}
+	}
 	.img-wrapper {
+		&:hover {
+			cursor: pointer;
+		}
 		span {
 			&:hover {
 				box-shadow: $box-shadow-medium;
-				cursor: pointer;
 			}
 		}
 

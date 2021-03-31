@@ -4,21 +4,26 @@
 	@media screen and (max-width: 600px) {
 		display: none;
 	}
-	z-index: 1000;
 	ul {
+		z-index: 100;
 		list-style-type: none;
 		position: absolute;
 		background-color: $dropdown-background-color;
-		box-shadow: 0 0 5px rgba(155, 155, 155, 0.788);
+		color: black;
+		font-weight: 400 !important;
+
+		box-shadow: 0 0 5px rgb(155, 155, 155);
 		border-radius: 10px;
 		font-size: 14px;
 		font-weight: 300;
 		padding: 0;
 		top: 75px;
 		left: 200px;
-		transition: opacity 2s linear;
+		transition: opacity 0.5s linear;
 
 		li {
+			z-index: 110 !important;
+			opacity: 100;
 			width: 100%;
 			padding-top: 10px;
 			padding-bottom: 10px;

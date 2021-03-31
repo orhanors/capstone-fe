@@ -17,7 +17,7 @@ function FileInput(props: Props) {
 				className='file-input'
 				id='file-input-upload'
 				type='file'
-				accept='.gif, .jpg, .png .jpeg'
+				accept='.gif, .jpg, .png .jpeg .webp'
 			/>
 		</div>
 	);
