@@ -1,11 +1,11 @@
 @import "../../../style/theme.scss";
 .notification-wrapper {
 	position: fixed;
-
+	z-index: 10000;
 	color: $basic-text-color;
 	border: 1px solid rgba(128, 128, 128, 0.39);
 	border-top-color: white;
-	bottom: 1rem;
+	top: 1rem;
 	left: 1rem;
 	overflow-wrap: break-word;
 	min-width: 15rem;
@@ -17,6 +17,16 @@
 	padding-left: 0.3rem;
 	box-shadow: $box-shadow-full;
 
+	button {
+		padding: 2% !important;
+		background-color: transparent;
+		font-weight: 500;
+		font-size: 1rem !important;
+
+		&:hover {
+			opacity: 100;
+		}
+	}
 	.notify-content-wrapper {
 		position: relative;
 
@@ -41,7 +51,7 @@
 
 		span {
 			position: absolute;
-			top: 0;
+			top: -2px;
 
 			right: 0;
 

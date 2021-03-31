@@ -6,9 +6,9 @@ const common = {
 	help: "Help",
 };
 
-export const userPages = { ...common, wishlist: "Wishlist" };
+export const USER_PAGES = { ...common, wishlist: "Wishlist" };
 
-export const sellerPages = {
+export const SELLER_PAGES = {
 	addProduct: "Add Product",
 	myProducts: "My Products",
 	...common,

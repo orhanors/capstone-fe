@@ -6,8 +6,8 @@ export const PRODUCT_TYPES = [
 	"Medicine",
 	"Device",
 ];
-export const NOTIFICATION_TIME = 8000; //8 secs
-export const GENERIC_ERROR_MSG = "Something went wrong!";
+export const NOTIFICATION_TIME = 3000; //8 secs
+export const GENERIC_ERROR_MSG = "Something went wrong! Please try again";
 
 //PRODUCTS
 export const USER_ROLES = {

@@ -15,6 +15,7 @@ export interface IProductDetails {
 	price: number;
 	quantity: number;
 	category: string;
+	slug: string;
 	type: string;
 }
 

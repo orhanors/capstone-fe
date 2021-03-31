@@ -82,7 +82,7 @@ export const getUserProfile = () =>
 
 export const logout = () =>
 	apiCall({
-		url: `${process.env.REACT_APP_BE_URL}/users/logout`,
+		url: `${process.env.REACT_APP_BE_URL}/auth/logout`,
 		onStart: requested.type,
 		onSuccess: logoutSuccess.type,
 		onError: failed.type,

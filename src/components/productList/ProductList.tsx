@@ -19,14 +19,12 @@ function ProductList() {
 
 	const getLoading = () => {
 		return (
-			<div>
-				<BasicLoader />
+			<div className='d-flex justify-content-center mt-5'>
+				<BasicLoader animation='grow' />
 			</div>
 		);
 	};
-	const getFailure = () => {
-		return <div className='text-center'> There is no result :( </div>;
-	};
+
 	const getSuccessResult = () => {
 		return (
 			<Row>

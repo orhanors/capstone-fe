@@ -18,7 +18,7 @@ function InputArea(props: Props) {
 					onChange={props.onChange}
 					value={props.value}
 					name={props.name}
-					rows={9}
+					rows={6}
 				/>
 			) : (
 				<input

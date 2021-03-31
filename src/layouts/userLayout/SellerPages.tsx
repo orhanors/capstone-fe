@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { sellerPages } from "../../utils/userPages";
+import { SELLER_PAGES } from "../../utils/userPages";
 import UserPages from "./UserPages";
 import { RiShoppingBasketFill, RiAddCircleFill } from "react-icons/ri";
 
@@ -13,7 +13,7 @@ function SellerPages() {
 						<span className='user-page-icon mr-2'>
 							<RiAddCircleFill />
 						</span>
-						{sellerPages.addProduct}
+						{SELLER_PAGES.addProduct}
 					</div>
 				</Link>
 
@@ -22,7 +22,7 @@ function SellerPages() {
 						<span className='user-page-icon mr-2'>
 							<RiShoppingBasketFill />
 						</span>
-						{sellerPages.myProducts}
+						{SELLER_PAGES.myProducts}
 					</div>
 				</Link>
 			</UserPages>

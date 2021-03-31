@@ -21,7 +21,8 @@ import BasicLoader from "../../loaders/spinner/BasicLoader";
 
 function ProductsSidebar() {
 	const dispatch = useDispatch();
-	const { productSidebar, cart } = useSelector((state) => state);
+	const { productSidebar, cart, user } = useSelector((state) => state);
+
 	const { loading } = cart;
 	const [isDropped, setIsDropped] = useState(false);
 	const [{ isOver }, drop] = useDrop({
@@ -37,9 +38,6 @@ function ProductsSidebar() {
 	const sideWidth = "450px";
 	const sideRef = useRef<HTMLDivElement>(null);
 
-	// useEffect(() => {
-	// 	dispatch(getShoppingCart());
-	// }, []);
 	useEffect(() => {
 		if (productSidebar) {
 			sideRef.current!.style.width = sideWidth;
@@ -66,6 +64,20 @@ function ProductsSidebar() {
 				onClick={() => dispatch(unsetProductSidebar())}>
 				<TiArrowBackOutline />
 			</span>
+			<h4 className='text-center text-green'>Shopping Cart</h4>
+			{getProducts()?.length > 0 && (
+				<p className='text-right mr-5' style={{ fontSize: "1rem" }}>
+					{" "}
+					<strong>Total:</strong> {"$" + cart.data?.total}
+				</p>
+			)}
+			{getProducts()?.length === 0 && !isOver && (
+				<p
+					className='d-flex align-items-center justify-content-center w-100 mt-5'
+					style={{ fontSize: "1rem" }}>
+					<strong>{user.data.name + ", "}</strong> your cart is empty!
+				</p>
+			)}
 			{loading ? (
 				<div className='d-flex justify-content-center align-items-center w-100 h-100'>
 					<BasicLoader variant='warning' animation='grow' />

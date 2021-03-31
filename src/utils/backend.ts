@@ -8,9 +8,9 @@ const backend = axios.create({
 });
 const refreshAuthLogic = (failedRequest: any) =>
 	backend({
-		url: `${REACT_APP_BE_URL}/auth/refreshToken`,
+		url: "/auth/refreshToken",
 		withCredentials: true,
-		method: "get",
+		method: "post",
 	}).then((tokenRefreshResponse) => {
 		return Promise.resolve();
 	});

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { userPages } from "../../utils/userPages";
+import { USER_PAGES } from "../../utils/userPages";
 import { FaShoppingCart, FaEdit } from "react-icons/fa";
 import { RiMessage2Fill } from "react-icons/ri";
 interface Props {
@@ -15,7 +15,7 @@ function UserPages({ children }: Props) {
 					<span className='user-page-icon mr-2'>
 						<FaShoppingCart />
 					</span>
-					{userPages.orders}
+					{USER_PAGES.orders}
 				</div>
 			</Link>
 
@@ -24,7 +24,7 @@ function UserPages({ children }: Props) {
 					<span className='user-page-icon mr-2'>
 						<FaEdit />
 					</span>
-					{userPages.edit}
+					{USER_PAGES.edit}
 				</div>
 			</Link>
 
@@ -33,7 +33,7 @@ function UserPages({ children }: Props) {
 					<span className='user-page-icon mr-2'>
 						<RiMessage2Fill />
 					</span>
-					{userPages.reviews}
+					{USER_PAGES.reviews}
 				</div>
 			</Link>
 		</div>

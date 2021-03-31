@@ -15,7 +15,7 @@ function MainProductsInfo() {
 	return (
 		<div className='main-products-info-wrapper container'>
 			<h1 className='text-center text-green'>Choose Your Category</h1>
-			<p className='medium-title title-black text-center mt-3 mb-5 '>
+			<p className='medium-title title-gray text-center mt-3 mb-5 '>
 				Personal and Professional Usage
 			</p>
 

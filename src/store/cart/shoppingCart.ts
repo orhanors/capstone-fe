@@ -4,14 +4,15 @@ import { apiCall } from "../api/api";
 import { IProduct } from "../../types/product";
 import { IError } from "../../types/error.d";
 import { IShoppingCart } from "../../types/cart.d";
+import { StateWithHistory } from "redux-undo";
 
-interface InitialState {
+interface CartInitialState {
 	data: IShoppingCart | null;
 	errorMessage: IError | null;
 	loading: boolean;
 }
 
-const initialState: InitialState = {
+const initialState: CartInitialState = {
 	data: null,
 	errorMessage: null,
 	loading: false,
@@ -80,6 +81,19 @@ export const addProductToCart = (productId: string, price: number) =>
 		onError: failed.type,
 	});
 
+export const addMultipleProductToCart = (
+	productId: string | undefined,
+	price: number | undefined,
+	qty: number
+) =>
+	apiCall({
+		url: `${process.env.REACT_APP_BE_URL}/cart/addMultiple`,
+		method: "post",
+		data: { productId, price, qty },
+		onStart: requested.type,
+		onSuccess: addToCart.type,
+		onError: failed.type,
+	});
 export const decreaseItemFromCart = (productId: string, price: number) =>
 	apiCall({
 		url: `${process.env.REACT_APP_BE_URL}/cart/decrease`,

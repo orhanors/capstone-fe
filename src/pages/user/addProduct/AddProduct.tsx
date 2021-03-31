@@ -29,6 +29,7 @@ function AddProduct() {
 		description: "",
 		brand: "",
 		price: 0,
+		slug: "",
 		category: PRODUCT_CATEGORIES[0],
 		type: PRODUCT_TYPES[0],
 		quantity: 0,
@@ -100,11 +101,18 @@ function AddProduct() {
 	};
 
 	const handleInputChange = (e: any) => {
-		setError("");
-		setProductDetails({
-			...productDetails,
-			[e.target.name]: e.target.value,
-		});
+		if (e.target.name === "name") {
+			setProductDetails({
+				...productDetails,
+				[e.target.name]: e.target.value,
+				slug: e.target.value.split(" ").join("-").toLowerCase(),
+			});
+		} else {
+			setProductDetails({
+				...productDetails,
+				[e.target.name]: e.target.value,
+			});
+		}
 	};
 
 	const handleFileDrop = (item: any, monitor: DropTargetMonitor) => {
@@ -298,7 +306,7 @@ function AddProduct() {
 	};
 
 	const getProductInfo2 = () => {
-		const { description } = productDetails;
+		const { description, slug } = productDetails;
 
 		return (
 			<>
@@ -321,6 +329,13 @@ function AddProduct() {
 						return <option>{type}</option>;
 					})}
 				</select>
+				<InputArea
+					name='slug'
+					onChange={handleInputChange}
+					value={slug}
+					label='Slug'
+					type='text'
+				/>
 				<InputArea
 					required
 					name='description'

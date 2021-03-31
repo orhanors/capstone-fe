@@ -75,9 +75,10 @@ a {
 	text-decoration: none;
 
 	color: black;
-
+	transition: 0.3s;
 	&:hover {
 		text-decoration: none;
+		color: $primary-green;
 	}
 }
 select {
