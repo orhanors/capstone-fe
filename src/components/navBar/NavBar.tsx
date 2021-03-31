@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Logo from "../../assets/imgs/logo.png";
 import FacebookLogo from "../../assets/icons/FacebookLogo";
 import InstagramLogo from "../../assets/icons/InstagramLogo";
@@ -20,18 +20,24 @@ import useOnClickOutside from "../../hooks/useOnClickOutside";
 import EnFlag from "../../assets/imgs/en.svg";
 import TrFlag from "../../assets/imgs/tr.svg";
 import { isAuthUser } from "../../utils/auth";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
+import CommonDropdown from "../_common/dropdown/CommonDropdown";
+import { USER_PAGES, SELLER_PAGES } from "../../utils/userPages";
+import { logout } from "../../store/user/user";
 function NavBar() {
 	const history = useHistory();
 	const { i18n, t } = useTranslation();
 	const dispatch = useDispatch();
 
 	const [showLanguages, setShowLanguages] = useState(false);
-	const { productSidebar, searchSidebar } = useSelector((store) => store);
+	const { productSidebar, searchSidebar, user } = useSelector(
+		(store) => store
+	);
 	const navRef = useRef<HTMLDivElement>(null);
 	const langSwitcherRef = useRef(null);
 	const iconColor = "gray";
-
+	const [userHovered, setUserHovered] = useState(false);
+	const [productHovered, setProductHovered] = useState(false);
 	const handleResponsive = () => {
 		if (
 			navRef.current!.className ===
@@ -49,6 +55,40 @@ function NavBar() {
 			history.push("/login");
 		}
 	};
+
+	const handleLogout = () => {
+		dispatch(logout());
+	};
+
+	useEffect(() => {
+		if (!isAuthUser()) {
+			history.push("/login");
+		}
+	}, [user.data.name]);
+	const getDropdown = (dropdownEntries: any) => {
+		return (
+			<CommonDropdown>
+				<ul>
+					{Object.entries(dropdownEntries).map(
+						([key, value]: [key: any, value: any]) => {
+							const link =
+								value.split(" ")[0].toLowerCase() +
+								value.split(" ").splice(1, 1).join("");
+
+							return (
+								<li key={key + value}>
+									{" "}
+									<Link to={link}>{value}</Link>{" "}
+								</li>
+							);
+						}
+					)}
+
+					<li onClick={handleLogout}>Log out</li>
+				</ul>
+			</CommonDropdown>
+		);
+	};
 	useOnClickOutside(langSwitcherRef, () => setShowLanguages(false));
 	return (
 		<>
@@ -58,7 +98,7 @@ function NavBar() {
 			}
 			<div
 				ref={navRef}
-				className='nav-container d-flex justify-content-between'>
+				className='nav-container container d-flex justify-content-between'>
 				<div className='nav-portion d-flex justify-content-between'>
 					<span className='nav-icon mx-2'>
 						<FacebookLogo color={iconColor} />
@@ -85,37 +125,56 @@ function NavBar() {
 						</span>{" "}
 					</span>
 				</div>
-				<div className='nav-portion d-flex justify-content-between'>
-					<p className='nav-item-text mx-3 grow'>
+				<div className='nav-portion d-flex align-items-center justify-content-center'>
+					<Link to='/products' className='nav-item-text mx-3 grow'>
 						{t("navbar.products")}
-					</p>
-					<p className='nav-item-text mx-3 grow'>
+					</Link>
+				</div>
+
+				<div className='nav-portion d-flex align-items-center justify-content-center'>
+					<Link to='/about' className='nav-item-text mx-3 grow'>
 						{t("navbar.about")}
-					</p>
+					</Link>
 				</div>
 				<div className='nav-portion d-flex justify-content-between'>
-					<img className='logo' alt='logo' src={Logo} />
+					<Link to='/'>
+						<img className='logo' alt='logo' src={Logo} />
+					</Link>
 				</div>
-				<div className='nav-portion d-flex justify-content-between'>
-					<p className='nav-item-text mx-3 grow'>
+				<div className='nav-portion d-flex justify-content-between mt-1'>
+					<Link to='/blog' className='nav-item-text mx-3 grow'>
 						{t("navbar.blog")}
-					</p>
-					<p className='nav-item-text mx-3 grow'>
+					</Link>
+					<Link to='/contact' className='nav-item-text mx-3 grow'>
 						{t("navbar.contact")}
-					</p>
+					</Link>
 				</div>
-				<div className='nav-portion d-flex justify-content-between'>
+				<div className='nav-portion d-flex justify-content-between mt-3'>
 					<span
 						onClick={() => dispatch(setSearchSidebar())}
 						className='nav-icon mx-2'>
 						<SearchIcon color={iconColor} />
 					</span>
-					<span onClick={handleUserRoute} className='nav-icon mx-2'>
+					<span
+						onClick={handleUserRoute}
+						onMouseOver={() => setUserHovered(true)}
+						onMouseLeave={() => setUserHovered(false)}
+						className='nav-icon mx-2'>
 						<UserIcon color={iconColor} />
+						{userHovered && (
+							<span>
+								{user.data.role &&
+									getDropdown(
+										user.data.role === "seller"
+											? SELLER_PAGES
+											: USER_PAGES
+									)}
+							</span>
+						)}
 					</span>
 					<span
 						onClick={() => dispatch(setProductSidebar())}
-						className='nav-icon mx-2'>
+						className='cart-icon nav-icon mx-2'>
 						<CartIcon color={iconColor} />
 					</span>
 				</div>

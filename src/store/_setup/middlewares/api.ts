@@ -10,9 +10,9 @@ import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 const refreshAuthLogic = (failedRequest: any) =>
 	axios({
-		url: `http://localhost:3001/api/users/refreshToken`,
+		url: `http://localhost:3001/api/auth/refreshToken`,
 		withCredentials: true,
-		method: "get",
+		method: "post",
 	}).then((tokenRefreshResponse) => {
 		return Promise.resolve();
 	});
@@ -51,13 +51,13 @@ const api: Middleware = ({ dispatch }: MiddlewareAPI) => (
 		});
 
 		//General
-		dispatch(actions.apiCallSuccess(response.data));
+		//dispatch(actions.apiCallSuccess(response.data));
 		//Spesific
 		if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
 	} catch (error) {
-		console.log("errorr is: ", error.response.data);
+		console.log("errorr is: ", error?.response?.data);
 		//General error action
-		const errorMessage = error.response.data.errors;
+		const errorMessage = error?.response?.data.errors;
 		dispatch(actions.apiCallFailed(errorMessage));
 
 		//Spesific error action

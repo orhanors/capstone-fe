@@ -1,6 +1,7 @@
 @import "../../style/theme.scss";
 .nav-container {
 	.nav-portion {
+		position: relative;
 		@media screen and (max-width: 600px) {
 			&:not(:nth-child(3)) {
 				display: none !important;
