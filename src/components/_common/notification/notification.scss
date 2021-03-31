@@ -10,18 +10,20 @@
 	overflow-wrap: break-word;
 	min-width: 15rem;
 	max-width: 25vw;
-	min-height: 5rem;
+	min-height: 4rem;
 	border-radius: 5px;
 
 	padding-right: 0.3rem;
 	padding-left: 0.3rem;
 	box-shadow: $box-shadow-full;
+	background-color: transparent;
 
 	button {
 		padding: 2% !important;
 		background-color: transparent;
 		font-weight: 500;
 		font-size: 1rem !important;
+		color: $primary-black;
 
 		&:hover {
 			opacity: 100;
@@ -31,12 +33,17 @@
 		position: relative;
 
 		padding-bottom: 1rem;
-		padding-top: 1rem;
+		padding-top: 0.6rem;
 		padding-left: 0.4rem;
 		padding-right: 0.4rem;
 		width: 103%;
 		height: 100%;
-
+		.approve-icon {
+			svg {
+				width: 10%;
+				height: 10%;
+			}
+		}
 		.content {
 			margin-top: 5%;
 			width: 100%;
@@ -49,13 +56,13 @@
 			}
 		}
 
-		span {
+		.close {
 			position: absolute;
 			top: -2px;
 
 			right: 0;
 
-			font-size: 0.7rem;
+			font-size: 0.8rem;
 			font-weight: 600;
 			color: $basic-text-color;
 			border-radius: 50%;

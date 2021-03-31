@@ -7,11 +7,12 @@ import "./notification.scss";
 import { unsetNotification } from "../../../store/notification/notification";
 import { NOTIFICATION_TIME } from "../../../utils/constants";
 import { addProductToCart } from "../../../store/cart/shoppingCart";
+import { FcApproval, FcDownLeft } from "react-icons/fc";
 function Notification() {
 	const dispatch = useDispatch();
 	const notifyRef = useRef<HTMLDivElement>(null);
 	const successColor = "#51A351";
-	const failColor = "orange";
+	const failColor = "rgb(255,204,0)";
 	const { show, message, link, behavior, undo, product } = useSelector(
 		(store) => store.notification
 	);
@@ -40,11 +41,23 @@ function Notification() {
 						backgroundColor: `${
 							behavior === "good" ? successColor : failColor
 						}`,
-						color: `${behavior === "good" ? "white" : "black"}`,
+						color: "white",
 					}}>
-					<div className='notify-content-wrapper'>
-						<span onClick={handleClose}>X</span>
+					<div className='notify-content-wrapper d-flex align-items-center'>
+						<div className='close' onClick={handleClose}>
+							X
+						</div>
 						<div className='content'>
+							{behavior === "good" && (
+								<span className='approve-icon'>
+									<FcApproval />
+								</span>
+							)}
+							{behavior === "warning" && (
+								<span className='approve-icon'>
+									<FcDownLeft />
+								</span>
+							)}
 							{message}
 							{link && (
 								<Link to={link.to}>{" " + link.content}</Link>
