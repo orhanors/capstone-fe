@@ -20,6 +20,7 @@ import Notification from "../components/_common/notification/Notification";
 import Products from "../pages/products/Products";
 import CommonDropdown from "../components/_common/dropdown/CommonDropdown";
 import Product from "../pages/product/Product";
+import AddArticle from "../pages/user/addArticle/AddArticle";
 
 function App() {
 	const { i18n } = useTranslation();
@@ -45,6 +46,11 @@ function App() {
 						path='/addProduct'
 						exact
 						component={AddProduct}
+					/>
+					<ProtectedRoute
+						path='/addArticle'
+						exact
+						component={AddArticle}
 					/>
 					<ProtectedRoute
 						path='/myProducts'
