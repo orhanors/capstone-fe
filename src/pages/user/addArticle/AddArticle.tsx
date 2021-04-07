@@ -48,6 +48,9 @@ function AddArticle() {
 			<div className='tags my-4'>
 				<Row>
 					<Col md={12} className='d-flex justify-content-center mb-2'>
+						<h5 className='text-center'>#tags</h5>
+					</Col>
+					<Col md={12} className='d-flex justify-content-center mb-2'>
 						<input
 							className='tag-input'
 							placeholder={

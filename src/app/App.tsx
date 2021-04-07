@@ -21,6 +21,7 @@ import Products from "../pages/products/Products";
 import CommonDropdown from "../components/_common/dropdown/CommonDropdown";
 import Product from "../pages/product/Product";
 import AddArticle from "../pages/user/addArticle/AddArticle";
+import Blog from "../pages/blog/Blog";
 
 function App() {
 	const { i18n } = useTranslation();
@@ -36,6 +37,7 @@ function App() {
 					<Notification />
 
 					<Route path='/login' exact component={Auth} />
+					<Route path='/blog' exact component={Blog} />
 					<ProtectedRoute
 						path='/products/:slug'
 						exact
