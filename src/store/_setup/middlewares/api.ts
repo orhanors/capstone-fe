@@ -49,7 +49,7 @@ const api: Middleware = ({ dispatch }: MiddlewareAPI) => (
 			headers,
 			withCredentials: true,
 		});
-		console.log("response: ", response);
+
 		//General
 		//dispatch(actions.apiCallSuccess(response.data));
 		//Spesific

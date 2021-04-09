@@ -1,6 +1,7 @@
 import React from "react";
 import { Quill } from "react-quill";
-
+import { backend } from "../../utils/backend";
+import { ARTICLE_IMAGE_KEY } from "../../utils/constants";
 // Custom Undo button icon component for Quill editor. You can import it directly
 // from 'quill/assets/icons/undo.svg' but I found that a number of loaders do not
 // handle them correctly
@@ -37,7 +38,56 @@ function redoChange() {
 	//@ts-ignore
 	this.quill.history.redo();
 }
+async function postArticleImage(data: FormData) {
+	const response = await backend({
+		url: "/blog/upload/image",
+		method: "post",
+		data,
+	});
+	const url = response.data.url;
+	return url;
+}
+function imageHandler() {
+	const input = document.createElement("input");
 
+	input.setAttribute("type", "file");
+	input.setAttribute("accept", "image/*");
+	input.click();
+
+	input.onchange = async () => {
+		const file = input.files![0];
+		const formData = new FormData();
+
+		formData.append(ARTICLE_IMAGE_KEY, file);
+
+		// Save current cursor state
+		//@ts-ignore
+		const range = this.quill.getSelection(true);
+
+		// Insert temporary loading placeholder image
+		//@ts-ignore
+		this.quill.insertEmbed(
+			range.index,
+			"image",
+			`${window.location.origin}/images/loaders/placeholder.gif`
+		);
+
+		// Move cursor to right side of image (easier to continue typing)
+		//@ts-ignore
+		this.quill.setSelection(range.index + 1);
+
+		const res = await postArticleImage(formData); // API post, returns image location as string e.g. 'http://www.example.com/images/foo.png'
+
+		// Remove placeholder image
+		//@ts-ignore
+		this.quill.deleteText(range.index, 1);
+
+		// Insert uploaded image
+		// this.quill.insertEmbed(range.index, 'image', res.body.image);
+		//@ts-ignore
+		this.quill.insertEmbed(range.index, "image", res);
+	};
+}
 // Add sizes to whitelist and register them
 const Size = Quill.import("formats/size");
 Size.whitelist = ["extra-small", "small", "medium", "large"];
@@ -62,6 +112,7 @@ export const modules = {
 		handlers: {
 			undo: undoChange,
 			redo: redoChange,
+			image: imageHandler,
 		},
 	},
 	history: {

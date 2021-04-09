@@ -7,12 +7,12 @@ import "./notification.scss";
 import { unsetNotification } from "../../../store/notification/notification";
 import { NOTIFICATION_TIME } from "../../../utils/constants";
 import { addProductToCart } from "../../../store/cart/shoppingCart";
-import { FcApproval, FcDownLeft } from "react-icons/fc";
+import { FcApproval, FcInfo } from "react-icons/fc";
 function Notification() {
 	const dispatch = useDispatch();
 	const notifyRef = useRef<HTMLDivElement>(null);
 	const successColor = "#51A351";
-	const failColor = "rgb(255,204,0)";
+	const failColor = "#202124";
 	const { show, message, link, behavior, undo, product } = useSelector(
 		(store) => store.notification
 	);
@@ -36,7 +36,7 @@ function Notification() {
 			{show && (
 				<div
 					ref={notifyRef}
-					className='notification-wrapper fadeInTop'
+					className='notification-wrapper fadeInBottom'
 					style={{
 						backgroundColor: `${
 							behavior === "good" ? successColor : failColor
@@ -47,23 +47,34 @@ function Notification() {
 						<div className='close' onClick={handleClose}>
 							X
 						</div>
-						<div className='content'>
+						<div className='content mb-2'>
 							{behavior === "good" && (
 								<span className='approve-icon'>
 									<FcApproval />
 								</span>
 							)}
 							{behavior === "warning" && (
-								<span className='approve-icon'>
-									<FcDownLeft />
+								<span className='info-icon mr-1'>
+									<FcInfo />
 								</span>
 							)}
 							{message}
 							{link && (
-								<Link to={link.to}>{" " + link.content}</Link>
+								<span
+									onClick={() =>
+										dispatch(unsetNotification())
+									}>
+									<Link to={link.to} className='notify-link'>
+										{" " + link.content}
+									</Link>
+								</span>
 							)}
 
-							{undo && <button onClick={handleUndo}>Undo</button>}
+							{undo && (
+								<button onClick={handleUndo} className='ml-2'>
+									Undo
+								</button>
+							)}
 						</div>
 					</div>
 				</div>
