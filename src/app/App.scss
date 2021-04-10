@@ -39,6 +39,7 @@ body {
 	// margin-right: 4vw;
 	transition: 0.3s;
 	color: $primary-black;
+	background-color: #eef0f1;
 }
 
 #root {
@@ -109,7 +110,7 @@ select {
 }
 
 .text-gray {
-	color: gray;
+	color: rgb(109, 109, 109);
 }
 .medium-title {
 	font-size: 1.1rem !important;

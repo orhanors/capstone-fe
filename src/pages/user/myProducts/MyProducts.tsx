@@ -7,6 +7,7 @@ import ProductCart from "../../../components/productCart/ProductCart";
 import { IProduct } from "../../../types/product.d";
 import { useSelector } from "../../../store/_helpers/useCustomSelector";
 import { Nullish } from "@testing-library/react";
+import { Link } from "react-router-dom";
 
 function MyProducts() {
 	const [products, setProducts] = useState<Array<IProduct> | null>(null);
@@ -46,19 +47,25 @@ function MyProducts() {
 	return (
 		<UserLayout>
 			<div className='ml-5'>
-				<h5 className='text-left text-gray'>
-					{" "}
-					<strong className='text-black'>
-						{user.data.name + ","}
-					</strong>{" "}
-					see your product details and increase your selling!
-				</h5>
+				{products!?.length !== 0 && (
+					<h5 className='text-left text-gray'>
+						{" "}
+						<strong className='text-black'>
+							{user.data.name + ","}
+						</strong>{" "}
+						see your product details and increase your selling!
+					</h5>
+				)}
 				{products!?.length === 0 && !loading && (
 					<h5 className='text-center mt-5 text-gray'>
 						<strong className='text-black'>
 							{user.data.name + ","}
 						</strong>{" "}
-						you don't have any products. Start selling
+						you don't have any products.{" "}
+						<Link to='/addProduct'>
+							{" "}
+							<span className='text-green'>Start selling</span>
+						</Link>
 					</h5>
 				)}
 

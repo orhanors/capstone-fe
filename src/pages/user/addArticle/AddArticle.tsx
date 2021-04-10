@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { setNotification } from "../../../store/notification/notification";
 import UserLayout from "../../../layouts/userLayout/UserLayout";
 import { useSelector } from "../../../store/_helpers/useCustomSelector";
+import HeartbeatLoader from "../../../loaders/heartbeat/HeartbeatLoader";
 function AddArticle() {
 	const dispatch = useDispatch();
 	const { user } = useSelector((store) => store);
@@ -197,8 +198,10 @@ function AddArticle() {
 					</div>
 				)}
 				{loading && (
-					<div className='loader mt-5'>
-						<BasicLoader />{" "}
+					<div className='mt-5'>
+						{/* <BasicLoader />{" "} */}
+
+						<HeartbeatLoader />
 					</div>
 				)}
 				<button
