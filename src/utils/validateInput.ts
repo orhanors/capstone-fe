@@ -6,9 +6,16 @@ export const validateInput = (
 	allRequired?: boolean,
 	email?: string
 ) => {
+	const EMPTY_PHONE_PLACEHOLDER = "+9";
+	const EMPTY_NUMBER_PLACEHOLDER = "0";
+
 	for (let [field, value] of Object.entries(requiredFields)) {
 		//field==="0" means empty number
-		if (isEmpty(value) || value === "0") {
+		if (
+			isEmpty(value) ||
+			value === EMPTY_NUMBER_PLACEHOLDER ||
+			value === EMPTY_PHONE_PLACEHOLDER
+		) {
 			if (allRequired) return "All fields are required!";
 			return `Ooops! "${field}" field is required`;
 		}

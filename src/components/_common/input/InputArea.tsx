@@ -4,7 +4,7 @@ interface Props {
 	type: "text" | "number" | "textarea" | "email" | "password";
 	value: any;
 	name: string;
-	label: string;
+	label?: string;
 	required?: boolean;
 }
 function InputArea(props: Props) {

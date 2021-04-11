@@ -176,6 +176,8 @@ function AddProduct() {
 		const notify = {
 			message: "Successfully created! Go to",
 			link: { to: "/myProducts", content: "my products" },
+			behavior: "good",
+			time: 10000,
 		};
 		dispatch(setNotification(notify));
 	};
@@ -359,6 +361,9 @@ function AddProduct() {
 				<Row>
 					<Col md={6} sm={12}>
 						<div className='product-info p-5'>
+							<h4 className='text-center mb-1'>
+								Product Details
+							</h4>
 							{error && (
 								<p className='text-center w-100 text-danger'>
 									{error}

@@ -1,4 +1,5 @@
 //GENERAL
+import Blog from "../pages/blog/Blog";
 export const PRODUCT_CATEGORIES = ["Other", "Device", "Medicine", "PPE"];
 export const PRODUCT_TYPES = [
 	"Personal Care",
@@ -6,7 +7,6 @@ export const PRODUCT_TYPES = [
 	"Medicine",
 	"Device",
 ];
-export const NOTIFICATION_TIME = 3000; //8 secs
 export const GENERIC_ERROR_MSG = "Something went wrong! Please try again";
 
 //PRODUCTS
@@ -17,3 +17,6 @@ export const USER_ROLES = {
 };
 
 export const MAX_IMG_SIZE = 4;
+
+//Blog
+export const ARTICLE_IMAGE_KEY = "article";

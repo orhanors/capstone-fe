@@ -58,6 +58,7 @@ function NavBar() {
 
 	const handleLogout = () => {
 		dispatch(logout());
+		setUserHovered(false);
 	};
 
 	useEffect(() => {

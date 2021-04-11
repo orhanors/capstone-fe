@@ -2,13 +2,17 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { SELLER_PAGES } from "../../utils/userPages";
 import UserPages from "./UserPages";
-import { RiShoppingBasketFill, RiAddCircleFill } from "react-icons/ri";
+import {
+	RiShoppingBasketFill,
+	RiAddCircleFill,
+	RiArticleLine,
+} from "react-icons/ri";
 
 function SellerPages() {
 	return (
 		<div>
 			<UserPages>
-				<Link to='addProduct'>
+				<Link to='/addProduct'>
 					<div className='user-page'>
 						<span className='user-page-icon mr-2'>
 							<RiAddCircleFill />
@@ -17,7 +21,16 @@ function SellerPages() {
 					</div>
 				</Link>
 
-				<Link to='myProducts'>
+				<Link to='/addArticle'>
+					<div className='user-page'>
+						<span className='user-page-icon mr-2'>
+							<RiArticleLine />
+						</span>
+						{SELLER_PAGES.addArticle}
+					</div>
+				</Link>
+
+				<Link to='/myProducts'>
 					<div className='user-page'>
 						<span className='user-page-icon mr-2'>
 							<RiShoppingBasketFill />

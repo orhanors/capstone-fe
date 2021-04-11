@@ -7,10 +7,7 @@ interface DropdownProps {
 function CommonDropdown({ children }: DropdownProps) {
 	return (
 		<>
-			<div className='dropdown-wrapper text-gray'>
-				<div className='triangle-up'></div>
-				{children}
-			</div>
+			<div className='dropdown-wrapper text-gray'>{children}</div>
 		</>
 	);
 }
