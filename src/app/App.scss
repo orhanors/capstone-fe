@@ -39,6 +39,7 @@ body {
 	// margin-right: 4vw;
 	transition: 0.3s;
 	color: $primary-black;
+	background-color: #eef0f1;
 }
 
 #root {
@@ -63,11 +64,10 @@ button {
 	padding-bottom: 0.5rem;
 	background-color: $primary-green;
 	color: white;
-	border-radius: 10px;
+	border-radius: 7px;
 
 	&:hover {
-		transform: scale(1.05);
-		opacity: 0.7;
+		transform: scale(1.01);
 	}
 }
 
@@ -110,7 +110,7 @@ select {
 }
 
 .text-gray {
-	color: gray;
+	color: rgb(109, 109, 109);
 }
 .medium-title {
 	font-size: 1.1rem !important;

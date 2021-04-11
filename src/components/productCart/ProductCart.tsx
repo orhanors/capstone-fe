@@ -6,21 +6,25 @@ import { useDispatch } from "react-redux";
 import { setProductSidebar } from "../../store/productSidebar/productSide";
 import { IProduct } from "../../types/product";
 import { GrFavorite } from "react-icons/gr"; //empty heart
-import { MdFavorite } from "react-icons/md"; //filled heart
-import { HiOutlineShoppingCart, HiLink } from "react-icons/hi"; //cart
-
+import { FaEdit } from "react-icons/fa"; //filled heart
+import { HiOutlineShoppingCart, HiLink, HiDotsVertical } from "react-icons/hi"; //cart
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { CgDetailsLess } from "react-icons/cg";
 import "../../style/animations.scss";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { addProductToCart } from "../../store/cart/shoppingCart";
 import { setNotification } from "../../store/notification/notification";
 import { useSelector } from "../../store/_helpers/useCustomSelector";
+import { RouteComponentProps } from "react-router";
+import CommonDropdown from "../_common/dropdown/CommonDropdown";
 
-interface Props {
+interface Props extends RouteComponentProps {
 	product: IProduct;
 }
 
 const ProductCart = (props: Props) => {
 	const { product } = props;
+	const [sellerInfo, setSellerInfo] = useState(false);
 	const dispatch = useDispatch();
 	const { productSidebar } = useSelector((store) => store);
 	const [hovered, setHovered] = useState(false);
@@ -31,8 +35,9 @@ const ProductCart = (props: Props) => {
 			isDragging: monitor.isDragging(),
 		}),
 	});
+
 	useEffect(() => {
-		if (isDragging) {
+		if (isDragging && !isSeller()) {
 			dispatch(setProductSidebar());
 		}
 	}, [isDragging]);
@@ -51,7 +56,9 @@ const ProductCart = (props: Props) => {
 		}
 		//dispatch(setProductSidebar());
 	};
-
+	const isSeller = () => {
+		return props.location.pathname === "/myProducts";
+	};
 	return (
 		<div
 			onMouseOver={() => setHovered(true)}
@@ -69,14 +76,38 @@ const ProductCart = (props: Props) => {
 					}
 					ref={drag}
 				/>
-				{!isDragging && (
+				{!isDragging && !isSeller() && (
 					<div className='like-icon'>
 						<span>
 							<GrFavorite />{" "}
 						</span>
 					</div>
 				)}
-				{hovered && (
+
+				{isSeller() && (
+					<span
+						className='like-icon'
+						onMouseOver={() => setSellerInfo(true)}
+						onMouseLeave={() => setSellerInfo(false)}>
+						<HiDotsVertical />
+						{sellerInfo && (
+							<CommonDropdown>
+								<ul>
+									<li>
+										<CgDetailsLess /> Details
+									</li>
+									<li>
+										<FaEdit /> Edit
+									</li>
+									<li>
+										<RiDeleteBin6Line /> Delete
+									</li>
+								</ul>
+							</CommonDropdown>
+						)}
+					</span>
+				)}
+				{hovered && !isSeller() && (
 					<div className='icon-container fadeInBottom'>
 						<span onClick={handleAddToCart}>
 							{" "}
@@ -100,4 +131,4 @@ const ProductCart = (props: Props) => {
 	);
 };
 
-export default ProductCart;
+export default withRouter(ProductCart);

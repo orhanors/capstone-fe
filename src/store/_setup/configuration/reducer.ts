@@ -5,6 +5,7 @@ import searchSideReducer from "../../searchSidebar/searchSide";
 import notifyReducer from "../../notification/notification";
 import productsReducer from "../../products/products";
 import cartReducer from "../../cart/shoppingCart";
+import paymentErrorReducer from "../../paymentError/paymentError";
 
 const rootReducer = combineReducers({
 	user: userReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
 	notification: notifyReducer,
 	products: productsReducer,
 	cart: cartReducer,
+	paymentError: paymentErrorReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
