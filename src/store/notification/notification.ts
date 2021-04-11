@@ -18,12 +18,14 @@ const slice = createSlice({
 			link: action.payload.link,
 			undo: action.payload.undo,
 			product: action.payload.product,
+			time: action.payload.time,
 		}),
 		unsetNotification: (state) => ({
 			...state,
 			message: "",
 			show: false,
 			undo: false,
+			time: 0,
 		}),
 	},
 });

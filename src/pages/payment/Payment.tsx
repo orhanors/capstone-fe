@@ -4,9 +4,19 @@ import { FaBookReader, FaShoppingCart, FaCreditCard } from "react-icons/fa";
 import PaymentUserInfo from "../../components/paymentUserInfo/PaymentUserInfo";
 import Stripe from "../../components/paymentStripe/Stripe";
 import PaymentProductList from "../../components/paymentProducts/PaymentProductList";
+import { useSelector } from "../../store/_helpers/useCustomSelector";
+import { useDispatch } from "react-redux";
+import { INotification } from "../../types/notification.d";
+import { setNotification } from "../../store/notification/notification";
 
 function Payment() {
 	const [page, setPage] = useState(1);
+	const { paymentError } = useSelector((store) => store);
+	const dispatch = useDispatch();
+
+	const generateNotification = (notification: INotification) => {
+		dispatch(setNotification(notification));
+	};
 	const showProgress = () => {
 		return (
 			<div className='progress d-flex justify-content-around'>
@@ -37,7 +47,20 @@ function Payment() {
 				{page < 3 && (
 					<button
 						onClick={() => {
-							page <= 3 && setPage(page + 1);
+							if (page <= 3) {
+								if (
+									paymentError.error &&
+									page === paymentError.page
+								) {
+									const notification: INotification = {
+										message: paymentError.message,
+										behavior: "bad",
+									};
+									generateNotification(notification);
+								} else {
+									setPage(page + 1);
+								}
+							}
 						}}>
 						Next
 					</button>
@@ -77,4 +100,4 @@ function Payment() {
 	);
 }
 
-export default Payment;
+export default React.memo(Payment);

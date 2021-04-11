@@ -1,13 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import "./paymentUser.scss";
 import { useSelector } from "../../store/_helpers/useCustomSelector";
 import { Link } from "react-router-dom";
 import { FaUserAlt, FaUserEdit } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import {
+	setPaymentError,
+	unsetPaymentError,
+} from "../../store/paymentError/paymentError";
+import HeartbeatLoader from "../../loaders/heartbeat/HeartbeatLoader";
+import { unsetNotification } from "../../store/notification/notification";
 function PaymentUserInfo() {
-	const { data } = useSelector((store) => store.user);
+	const { data, loading } = useSelector((store) => store.user);
+	const dispatch = useDispatch();
 
+	useEffect(() => {
+		if (!data.address || !data.address.country || !data.phone) {
+			console.log("data:::::", data);
+			generatePaymentError();
+		} else {
+			dispatch(unsetPaymentError());
+			dispatch(unsetNotification());
+		}
+	}, [data.address, data.phone]);
+	const generatePaymentError = () => {
+		const error = {
+			page: 1,
+			message: "You have missing informations! Edit your profile",
+		};
+
+		dispatch(setPaymentError(error));
+	};
 	const checkField = (field: any, message: string) => {
 		return (
 			<span>
@@ -15,9 +40,7 @@ function PaymentUserInfo() {
 					field
 				) : (
 					<span>
-						<small className='text-danger'>
-							You don't have a phone number!
-						</small>{" "}
+						<small className='text-danger'>{message}</small>{" "}
 					</span>
 				)}
 			</span>
@@ -148,10 +171,13 @@ function PaymentUserInfo() {
 	};
 	return (
 		<div className='payment-user-info-container'>
-			<Row>
-				<Col md={12}>{showUserBasicInfo()}</Col>
-				<Col md={12}>{showUserAddressInfo()}</Col>
-			</Row>
+			{loading && <HeartbeatLoader />}
+			{!loading && (
+				<Row>
+					<Col md={12}>{showUserBasicInfo()}</Col>
+					<Col md={12}>{showUserAddressInfo()}</Col>
+				</Row>
+			)}
 		</div>
 	);
 }

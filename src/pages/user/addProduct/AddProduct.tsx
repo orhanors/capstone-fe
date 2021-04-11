@@ -176,6 +176,8 @@ function AddProduct() {
 		const notify = {
 			message: "Successfully created! Go to",
 			link: { to: "/myProducts", content: "my products" },
+			behavior: "good",
+			time: 7000,
 		};
 		dispatch(setNotification(notify));
 	};

@@ -5,4 +5,5 @@ export interface INotification {
 	behavior?: "good" | "bad" | "warning" | string; //Default "good"
 	show?: boolean;
 	product?: { id: string; price: number; qty?: number };
+	time?: number;
 }

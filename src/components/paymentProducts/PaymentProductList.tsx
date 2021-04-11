@@ -1,18 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "../../store/_helpers/useCustomSelector";
 import { IShoppingCart } from "../../types/cart.d";
 import CartItem from "../cartItem/CartItem";
 import HeartbeatLoader from "../../loaders/heartbeat/HeartbeatLoader";
 import { Link } from "react-router-dom";
 import { GoInfo } from "react-icons/go";
+import { useDispatch } from "react-redux";
+import { getUserCart } from "../../store/cart/shoppingCart";
+import {
+	setPaymentError,
+	unsetPaymentError,
+} from "../../store/paymentError/paymentError";
+import { unsetNotification } from "../../store/notification/notification";
 function PaymentProductList() {
 	const { cart, user } = useSelector((store) => store);
+	const dispatch = useDispatch();
 	const { loading } = cart;
 	const getProducts = () => {
 		//console.log(cart?.data!.products);
 		return (cart.data as IShoppingCart)?.products;
 	};
 
+	const isCartEmpty = () => {
+		return (getProducts() && getProducts()?.length === 0) || !getProducts();
+	};
+	const generatePaymentError = () => {
+		const error = {
+			page: 2,
+			message: `${user.data.name}, your cart is empty!`,
+		};
+		dispatch(setPaymentError(error));
+	};
+	useEffect(() => {
+		if (isCartEmpty()) {
+			generatePaymentError();
+		}
+	}, [cart.data]);
 	return (
 		<div>
 			{loading && <HeartbeatLoader />}
@@ -25,24 +48,31 @@ function PaymentProductList() {
 					/>
 				))}
 
-			{getProducts()?.length === 0 ||
-				(!getProducts() && (
-					<div className='w-100'>
+			{isCartEmpty() && (
+				<div className='w-100'>
+					{" "}
+					<h5 className='text-center mt-4'>
 						{" "}
-						<h5 className='text-center mt-4'>
+						<strong>{user.data.name}</strong>,your cart is empty
+						<br />
+						<br />
+						<small className='text-center w-100'>
 							{" "}
-							<strong>{user.data.name}</strong>,your cart is empty
-							<br />
-							<br />
-							<small className='text-center w-100'>
-								{" "}
-								<GoInfo /> Go to{" "}
-								<Link to='/products'>products</Link> page and
-								add new products to your cart
-							</small>
-						</h5>
-					</div>
-				))}
+							<GoInfo /> Go to{" "}
+							<Link to='/products'>
+								<span
+									onClick={() => {
+										dispatch(unsetPaymentError());
+										dispatch(unsetNotification());
+									}}>
+									products
+								</span>
+							</Link>{" "}
+							page and add new products to your cart
+						</small>
+					</h5>
+				</div>
+			)}
 		</div>
 	);
 }
