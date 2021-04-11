@@ -10,6 +10,7 @@ const initialUser = {
 	surname: "",
 	image: "",
 	email: "",
+	phone: "",
 	createdAt: "2021-03-22T11:31:00.542Z",
 	updatedAt: "2021-03-22T11:31:00.542Z",
 };

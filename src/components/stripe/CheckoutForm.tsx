@@ -9,6 +9,8 @@ import {
 	Elements,
 } from "@stripe/react-stripe-js";
 import "./stripe.scss";
+import { PaymentMethodCreateParams } from "@stripe/stripe-js";
+import { useSelector } from "../../store/_helpers/useCustomSelector";
 
 const useOptions = () => {
 	const fontSize = useResponsiveFontSize();
@@ -36,9 +38,11 @@ const useOptions = () => {
 };
 
 function CheckoutForm() {
+	const { data } = useSelector((store) => store.user);
 	const stripe = useStripe();
 	const elements = useElements();
 	const options = useOptions();
+
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 
@@ -47,12 +51,18 @@ function CheckoutForm() {
 			// form submission until Stripe.js has loaded.
 			return;
 		}
+		const billing_details: PaymentMethodCreateParams.BillingDetails = {
+			email: data.email,
+			name: data.name + " " + data.surname,
+		};
 
 		const payload = await stripe.createPaymentMethod({
 			type: "card",
 			//@ts-ignore
 			card: elements.getElement(CardNumberElement),
+			billing_details,
 		});
+
 		console.log("[PaymentMethod]", payload);
 	};
 	const getCheckoutForm = () => {

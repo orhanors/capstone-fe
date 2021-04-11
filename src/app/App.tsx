@@ -24,6 +24,7 @@ import AddArticle from "../pages/user/addArticle/AddArticle";
 import Blog from "../pages/blog/Blog";
 import Article from "../pages/article/Article";
 import Stripe from "../components/stripe/Stripe";
+import EditProfile from "../pages/user/editProfile/EditProfile";
 
 function App() {
 	const { i18n } = useTranslation();
@@ -61,6 +62,11 @@ function App() {
 						path='/myProducts'
 						exact
 						component={MyProducts}
+					/>
+					<ProtectedRoute
+						path='/editProfile'
+						exact
+						component={EditProfile}
 					/>
 					<ProtectedRoute
 						path='/products'
