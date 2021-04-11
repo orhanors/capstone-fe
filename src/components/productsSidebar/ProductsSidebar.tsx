@@ -15,9 +15,7 @@ import {
 } from "../../store/cart/shoppingCart";
 import { IProduct } from "../../types/product.d";
 import CartItem from "../cartItem/CartItem";
-import products from "../../store/products/products";
 import { IShoppingCart } from "../../types/cart";
-import BasicLoader from "../../loaders/spinner/BasicLoader";
 import HeartbeatLoader from "../../loaders/heartbeat/HeartbeatLoader";
 import { Link } from "react-router-dom";
 
@@ -55,6 +53,9 @@ function ProductsSidebar() {
 		console.log("isDropped", isDropped);
 	}, [isDropped]);
 
+	const handlePayment = () => {
+		dispatch(unsetProductSidebar());
+	};
 	const getProducts = () => {
 		//console.log(cart?.data!.products);
 		return (cart.data as IShoppingCart)?.products;
@@ -134,7 +135,12 @@ function ProductsSidebar() {
 					<button className='continue'>Continue Shopping</button>
 				</Link>
 				<Link to='/payment'>
-					<button className='ml-4 pay'>Payment</button>
+					<button
+						className='ml-4 pay'
+						onClick={handlePayment}
+						disabled={getProducts()?.length === 0 ? true : false}>
+						Payment
+					</button>
 				</Link>
 			</div>
 		);

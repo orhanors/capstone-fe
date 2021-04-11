@@ -78,11 +78,21 @@
 		}
 
 		.pay {
-			border: 1px solid $secondary-black;
 			background-color: $secondary-black !important;
-			&:hover {
-				color: $primary-black;
-				background-color: transparent !important;
+			&:not(:disabled) {
+				border: 1px solid $secondary-black;
+				&:hover {
+					color: $primary-black;
+					background-color: transparent !important;
+				}
+			}
+		}
+
+		.pay {
+			&:disabled {
+				&:hover {
+					cursor: not-allowed;
+				}
 			}
 		}
 	}

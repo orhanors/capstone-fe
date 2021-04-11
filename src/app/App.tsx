@@ -23,8 +23,9 @@ import Product from "../pages/product/Product";
 import AddArticle from "../pages/user/addArticle/AddArticle";
 import Blog from "../pages/blog/Blog";
 import Article from "../pages/article/Article";
-import Stripe from "../components/stripe/Stripe";
+
 import EditProfile from "../pages/user/editProfile/EditProfile";
+import Payment from "../pages/payment/Payment";
 
 function App() {
 	const { i18n } = useTranslation();
@@ -73,7 +74,7 @@ function App() {
 						exact
 						component={Products}
 					/>
-					<ProtectedRoute path='/payment' exact component={Stripe} />
+					<ProtectedRoute path='/payment' exact component={Payment} />
 
 					<ProtectedRoute path='/seller' exact component={Seller} />
 				</DndProvider>
