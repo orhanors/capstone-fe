@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import "./payment.scss";
-import { FaBookReader, FaShoppingCart, FaCreditCard } from "react-icons/fa";
+import {
+	FaBookReader,
+	FaShoppingCart,
+	FaCreditCard,
+	FaUserAlt,
+} from "react-icons/fa";
+import { FcNext } from "react-icons/fc";
 import PaymentUserInfo from "../../components/paymentUserInfo/PaymentUserInfo";
 import Stripe from "../../components/paymentStripe/Stripe";
 import PaymentProductList from "../../components/paymentProducts/PaymentProductList";
@@ -74,21 +80,30 @@ function Payment() {
 
 			{page === 1 && (
 				<div className='mt-5 user-info'>
-					<h4 className='text-center mb-3 text-gray'>User Details</h4>
+					<h4 className='text-center mb-3 text-gray'>
+						{" "}
+						<FcNext /> User Details
+					</h4>
+					<hr />
 					<PaymentUserInfo />
 				</div>
 			)}
 			{page === 2 && (
 				<div className='mt-5 product-info'>
-					<h4 className='text-center mb-3 text-gray'>Products</h4>
+					<h4 className='text-center mb-3 text-gray'>
+						{" "}
+						<FcNext /> <FcNext /> Products
+					</h4>
+					<hr />
 					<PaymentProductList />
 				</div>
 			)}
 			{page === 3 && (
 				<div className='mt-5 cart-info'>
 					<h4 className='text-center mb-3 text-gray'>
-						Payment Method
+						<FcNext /> <FcNext /> <FcNext /> Payment Method
 					</h4>
+					<hr />
 					<Stripe />
 				</div>
 			)}

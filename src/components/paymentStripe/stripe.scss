@@ -1,9 +1,25 @@
+@import "../../style/theme.scss";
 .payment-wrapper {
 	width: 40%;
+	background-color: white;
+	padding: 1.5rem;
+	border-radius: 20px;
 
+	&:hover {
+		box-shadow: $box-shadow-medium;
+		transform: scale(1.02);
+	}
 	button {
-		width: 50%;
-		margin-left: 25%;
+		width: 100%;
+		background-color: $primary-blue;
+		color: white;
+		font-weight: 600;
+		font-size: 1.4rem;
+		border-radius: 20px;
+
+		&:hover {
+			background-color: $primary-black !important;
+		}
 	}
 	.checkout-form {
 		input,

@@ -177,7 +177,7 @@ function AddProduct() {
 			message: "Successfully created! Go to",
 			link: { to: "/myProducts", content: "my products" },
 			behavior: "good",
-			time: 7000,
+			time: 10000,
 		};
 		dispatch(setNotification(notify));
 	};

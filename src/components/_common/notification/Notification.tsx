@@ -19,8 +19,8 @@ function Notification() {
 	const failColor = "#ff4d4d";
 
 	const GOOD_TIME = 3000;
-	const WARNING_TIME = 10000;
-	const BAD_TIME = 10000;
+	const WARNING_TIME = 8000;
+	const BAD_TIME = 8000;
 	const dispatch = useDispatch();
 	const [notificationTime, setNotificationTime] = useState(GOOD_TIME);
 	const notifyRef = useRef<HTMLDivElement>(null);

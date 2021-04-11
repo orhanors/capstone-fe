@@ -26,6 +26,7 @@ import Article from "../pages/article/Article";
 
 import EditProfile from "../pages/user/editProfile/EditProfile";
 import Payment from "../pages/payment/Payment";
+import OrderReview from "../pages/orderReview/OrderReview";
 
 function App() {
 	const { i18n } = useTranslation();
@@ -73,6 +74,11 @@ function App() {
 						path='/products'
 						exact
 						component={Products}
+					/>
+					<ProtectedRoute
+						path='/orderReview'
+						exact
+						component={OrderReview}
 					/>
 					<ProtectedRoute path='/payment' exact component={Payment} />
 

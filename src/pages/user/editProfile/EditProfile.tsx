@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Col, Row } from "react-bootstrap";
 import InputArea from "../../../components/_common/input/InputArea";
 import UserLayout from "../../../layouts/userLayout/UserLayout";
@@ -8,8 +8,15 @@ import "./editProfile.scss";
 import CountryList from "../../../components/_common/countries/CountryList";
 import { validateInput } from "../../../utils/validateInput";
 import { backend } from "../../../utils/backend";
+import BasicLoader from "../../../loaders/spinner/BasicLoader";
+import { GENERIC_ERROR_MSG } from "../../../utils/constants";
+import { useDispatch } from "react-redux";
+import { setNotification } from "../../../store/notification/notification";
+import { getUserProfile } from "../../../store/user/user";
 function EditProfile() {
 	const { data } = useSelector((store) => store.user);
+	const wrapperRef = useRef<HTMLDivElement>(null);
+	const dispatch = useDispatch();
 	const initialPrimitiveState: IUser = {
 		name: "",
 		surname: "",
@@ -32,6 +39,31 @@ function EditProfile() {
 	);
 	const [warningPrimitive, setWarningPrimitive] = useState("");
 	const [warningAddress, setWarningAddress] = useState("");
+	const [loading, setLoading] = useState(false);
+	const setLoadingActions = () => {
+		setLoading(true);
+		wrapperRef.current?.classList.add("loading");
+	};
+
+	const unsetLoadingActions = () => {
+		setLoading(false);
+		wrapperRef.current?.classList.remove("loading");
+	};
+
+	const unsetLoadingWithError = () => {
+		unsetLoadingActions();
+		setWarningAddress(GENERIC_ERROR_MSG);
+		setWarningPrimitive(GENERIC_ERROR_MSG);
+	};
+
+	const generateSuccessNotification = () => {
+		const notify = {
+			message: " Successfully edited!",
+			behavior: "good",
+			time: 10000,
+		};
+		dispatch(setNotification(notify));
+	};
 	useEffect(() => {
 		if (data.name) {
 			setUserDetails({
@@ -78,6 +110,7 @@ function EditProfile() {
 		} else if (inputWarningAddress) {
 			setWarningAddress(inputWarningAddress);
 		} else {
+			setLoadingActions();
 			const body = {
 				name,
 				surname,
@@ -91,22 +124,32 @@ function EditProfile() {
 					postalCode: Number(postalCode),
 				},
 			};
-			const response = await backend({
-				url: "/users/me/edit",
-				data: body,
-				method: "put",
-			});
+			try {
+				const response = await backend({
+					url: "/users/me/edit",
+					data: body,
+					method: "put",
+				});
 
-			if (response.status === 201) {
-				console.log(response);
+				if (response.status === 201) {
+					unsetLoadingActions();
+					generateSuccessNotification();
+					dispatch(getUserProfile());
+				} else {
+					unsetLoadingWithError();
+				}
+			} catch (error) {
+				unsetLoadingWithError();
 			}
 		}
 	};
 	const handlePersonalInputChange = (e: any) => {
+		setWarningPrimitive("");
 		setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
 	};
 
 	const handleAddressInputChange = (e: any) => {
+		setWarningAddress("");
 		setAddressDetails({
 			...addressDetails,
 			[e.target.name]: e.target.value,
@@ -196,7 +239,7 @@ function EditProfile() {
 	};
 	return (
 		<UserLayout>
-			<div className='edit-profile-wrapper'>
+			<div ref={wrapperRef} className='edit-profile-wrapper'>
 				<Row>
 					<Col md={6} sm={12}>
 						<div className='primitive-info'>
@@ -207,6 +250,11 @@ function EditProfile() {
 								</small>
 							)}
 							{showPrimitiveInfo()}
+							{loading && (
+								<div className='loader-container'>
+									<BasicLoader />
+								</div>
+							)}
 						</div>
 					</Col>
 					<Col md={6} sm={12}>
@@ -223,7 +271,11 @@ function EditProfile() {
 								</div>
 							)}
 							{showAddressDetails()}
-
+							{loading && (
+								<div className='loader-container'>
+									<BasicLoader />
+								</div>
+							)}
 							<button
 								className='w-100 mt-3'
 								onClick={handleSubmit}>

@@ -6,7 +6,7 @@ import HeartbeatLoader from "../../loaders/heartbeat/HeartbeatLoader";
 import { Link } from "react-router-dom";
 import { GoInfo } from "react-icons/go";
 import { useDispatch } from "react-redux";
-import { getUserCart } from "../../store/cart/shoppingCart";
+import { getShoppingCart } from "../../store/cart/shoppingCart";
 import {
 	setPaymentError,
 	unsetPaymentError,
@@ -31,9 +31,16 @@ function PaymentProductList() {
 		};
 		dispatch(setPaymentError(error));
 	};
+
+	useEffect(() => {
+		dispatch(getShoppingCart());
+	}, []);
 	useEffect(() => {
 		if (isCartEmpty()) {
 			generatePaymentError();
+		} else {
+			dispatch(unsetPaymentError());
+			dispatch(unsetNotification());
 		}
 	}, [cart.data]);
 	return (

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import useResponsiveFontSize from "../../hooks/useResponsiveFontSize";
 import {
 	useStripe,
@@ -11,6 +11,9 @@ import {
 import "./stripe.scss";
 import { PaymentMethodCreateParams } from "@stripe/stripe-js";
 import { useSelector } from "../../store/_helpers/useCustomSelector";
+import { useHistory } from "react-router-dom";
+import { backend } from "../../utils/backend";
+import { GENERIC_ERROR_MSG } from "../../utils/constants";
 
 const useOptions = () => {
 	const fontSize = useResponsiveFontSize();
@@ -38,7 +41,12 @@ const useOptions = () => {
 };
 
 function CheckoutForm() {
+	const history = useHistory();
 	const { data } = useSelector((store) => store.user);
+
+	// const [loading, setLoading] = useState(false);
+	const [cardNumber, setCardNumber] = useState<number | null>(null);
+	const [error, setError] = useState("");
 	const stripe = useStripe();
 	const elements = useElements();
 	const options = useOptions();
@@ -54,6 +62,14 @@ function CheckoutForm() {
 		const billing_details: PaymentMethodCreateParams.BillingDetails = {
 			email: data.email,
 			name: data.name + " " + data.surname,
+			phone: data.phone,
+			address: {
+				country: data.address?.country,
+				city: data.address?.city,
+				line1: data.address?.line1,
+				line2: data.address?.line2,
+				postal_code: String(data.address?.postalCode),
+			},
 		};
 
 		const payload = await stripe.createPaymentMethod({
@@ -64,6 +80,23 @@ function CheckoutForm() {
 		});
 
 		console.log("[PaymentMethod]", payload);
+
+		if (payload.error) {
+			setError(payload.error.message as string);
+		} else {
+			try {
+				const response = await backend({
+					url: "/order/new",
+					method: "post",
+				});
+				if (response.status === 201) {
+					console.log("order response", response);
+					history.push("/orderReview");
+				}
+			} catch (error) {
+				setError(GENERIC_ERROR_MSG);
+			}
+		}
 	};
 	const getCheckoutForm = () => {
 		return (
@@ -76,7 +109,7 @@ function CheckoutForm() {
 							console.log("CardNumberElement [ready]");
 						}}
 						onChange={(event) => {
-							console.log("CardNumberElement [change]", event);
+							setError("");
 						}}
 						onBlur={() => {
 							console.log("CardNumberElement [blur]");
@@ -94,7 +127,7 @@ function CheckoutForm() {
 							console.log("CardNumberElement [ready]");
 						}}
 						onChange={(event) => {
-							console.log("CardNumberElement [change]", event);
+							setError("");
 						}}
 						onBlur={() => {
 							console.log("CardNumberElement [blur]");
@@ -112,7 +145,7 @@ function CheckoutForm() {
 							console.log("CardNumberElement [ready]");
 						}}
 						onChange={(event) => {
-							console.log("CardNumberElement [change]", event);
+							setError("");
 						}}
 						onBlur={() => {
 							console.log("CardNumberElement [blur]");
@@ -122,6 +155,9 @@ function CheckoutForm() {
 						}}
 					/>
 				</label>
+				{error && (
+					<small className='text-center text-danger'>{error}</small>
+				)}
 				<button type='submit' disabled={!stripe}>
 					Pay
 				</button>
