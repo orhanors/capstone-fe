@@ -2,7 +2,6 @@ const common = {
 	orders: "Orders",
 	reviews: "Reviews",
 	edit: "Edit Profile",
-	creditCart: "Credit Cards",
 	help: "Help",
 };
 

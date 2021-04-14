@@ -6,7 +6,6 @@ import notifyReducer from "../../notification/notification";
 import productsReducer from "../../products/products";
 import cartReducer from "../../cart/shoppingCart";
 import paymentErrorReducer from "../../paymentError/paymentError";
-
 const rootReducer = combineReducers({
 	user: userReducer,
 	productSidebar: productSideReducer,

@@ -76,7 +76,7 @@ function App() {
 						component={Products}
 					/>
 					<ProtectedRoute
-						path='/orderReview'
+						path='/orderReview/:orderId'
 						exact
 						component={OrderReview}
 					/>

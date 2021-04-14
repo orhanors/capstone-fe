@@ -10,21 +10,21 @@ function UserPages({ children }: Props) {
 	return (
 		<div>
 			{children ? children : ""}
-			<Link to='orders'>
-				<div className='user-page'>
-					<span className='user-page-icon mr-2'>
-						<FaShoppingCart />
-					</span>
-					{USER_PAGES.orders}
-				</div>
-			</Link>
-
 			<Link to='editProfile'>
 				<div className='user-page'>
 					<span className='user-page-icon mr-2'>
 						<FaEdit />
 					</span>
 					{USER_PAGES.edit}
+				</div>
+			</Link>
+
+			<Link to='orders'>
+				<div className='user-page'>
+					<span className='user-page-icon mr-2'>
+						<FaShoppingCart />
+					</span>
+					{USER_PAGES.orders}
 				</div>
 			</Link>
 
