@@ -8,14 +8,18 @@ import { Row, Col, Container } from "react-bootstrap";
 import BasicLoader from "../../loaders/spinner/BasicLoader";
 import { GENERIC_ERROR_MSG } from "../../utils/constants";
 
-function ProductList() {
+interface ProductListProps {
+	currentPage: number;
+	productsPerPage: number;
+}
+function ProductList(props: ProductListProps) {
 	const dispatch = useDispatch();
 	const { products, productSidebar } = useSelector((store) => store);
 
 	const { data, loading, errorMessage } = products;
 	useEffect(() => {
-		dispatch(getMainProducts());
-	}, []);
+		dispatch(getMainProducts(props.currentPage, props.productsPerPage));
+	}, [props.currentPage]);
 
 	const getLoading = () => {
 		return (
@@ -33,7 +37,7 @@ function ProductList() {
 						return (
 							<Col
 								key={product._id}
-								md={productSidebar ? 6 : 4}
+								md={productSidebar ? 6 : 6}
 								sm={12}>
 								<ProductCart product={product} />
 							</Col>

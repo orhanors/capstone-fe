@@ -53,7 +53,9 @@ const api: Middleware = ({ dispatch }: MiddlewareAPI) => (
 		//General
 		//dispatch(actions.apiCallSuccess(response.data));
 		//Spesific
-		if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
+		if (onSuccess) {
+			dispatch({ type: onSuccess, payload: response.data });
+		}
 	} catch (error) {
 		console.log("errorr is: ", error?.response?.data);
 		//General error action

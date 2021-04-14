@@ -10,9 +10,7 @@ const ProtectedRoute = ({ component, ...rest }: any) => {
 
 	useEffect(() => {
 		if (isAuthUser()) {
-			console.log(rest.path);
 			if (rest.path === "/") {
-				console.log("yeahh worked");
 				dispatch(getUserProfile());
 			}
 		}

@@ -92,4 +92,11 @@
 			}
 		}
 	}
+
+	.comment-section {
+		background-color: white;
+		padding: 1rem;
+		min-height: 60vh;
+		border: $thin-border;
+	}
 }

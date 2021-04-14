@@ -19,7 +19,7 @@ function MyProducts() {
 			setLoading(true);
 			const response = await backend({ url: "/products/seller" });
 			setLoading(false);
-			setProducts(response.data);
+			setProducts(response.data.reverse());
 		} catch (error) {
 			setError("Something went wrong! Please try again");
 			setLoading(false);

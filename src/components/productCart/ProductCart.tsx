@@ -15,7 +15,7 @@ import { Link, withRouter } from "react-router-dom";
 import { addProductToCart } from "../../store/cart/shoppingCart";
 import { setNotification } from "../../store/notification/notification";
 import { useSelector } from "../../store/_helpers/useCustomSelector";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, useHistory } from "react-router";
 import CommonDropdown from "../_common/dropdown/CommonDropdown";
 
 interface Props extends RouteComponentProps {
@@ -26,6 +26,7 @@ const ProductCart = (props: Props) => {
 	const { product } = props;
 	const [sellerInfo, setSellerInfo] = useState(false);
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const { productSidebar } = useSelector((store) => store);
 	const [hovered, setHovered] = useState(false);
 	const [{ isDragging }, drag] = useDrag({
@@ -59,15 +60,32 @@ const ProductCart = (props: Props) => {
 	const isSeller = () => {
 		return props.location.pathname === "/myProducts";
 	};
+
+	const isOrder = () => {
+		return props.location.pathname.includes("orderReview");
+	};
 	return (
 		<div
 			onMouseOver={() => setHovered(true)}
 			onMouseLeave={() => setHovered(false)}
-			style={{ opacity: `${isDragging ? "0.5" : "1"}` }}
+			style={{
+				opacity: `${isDragging ? "0.5" : "1"}`,
+				width: `${isOrder() && "12rem"}`,
+				height: `${isOrder() && "17rem"}`,
+			}}
 			className='product-cart-container m-2'>
 			<div className='img-wrapper'>
 				<img
-					title='Drag and drop or add to cart'
+					onClick={() => {
+						if (isOrder() || isSeller()) {
+							history.push(`/products/${product.slug}`);
+						}
+					}}
+					title={
+						!isSeller()
+							? "Drag and drop or add to cart"
+							: `${product.name.substring(0, 10) + ".."}`
+					}
 					alt='product-img'
 					src={
 						hovered && product.images[1]
@@ -76,7 +94,7 @@ const ProductCart = (props: Props) => {
 					}
 					ref={drag}
 				/>
-				{!isDragging && !isSeller() && (
+				{!isDragging && !isSeller() && !isOrder() && (
 					<div className='like-icon'>
 						<span>
 							<GrFavorite />{" "}
@@ -107,7 +125,7 @@ const ProductCart = (props: Props) => {
 						)}
 					</span>
 				)}
-				{hovered && !isSeller() && (
+				{hovered && !isSeller() && !isOrder() && (
 					<div className='icon-container fadeInBottom'>
 						<span onClick={handleAddToCart}>
 							{" "}

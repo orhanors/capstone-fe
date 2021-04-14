@@ -1,5 +1,5 @@
 //GENERAL
-import Blog from "../pages/blog/Blog";
+
 export const PRODUCT_CATEGORIES = ["Other", "Device", "Medicine", "PPE"];
 export const PRODUCT_TYPES = [
 	"Personal Care",

@@ -79,7 +79,7 @@ function CheckoutForm() {
 			billing_details,
 		});
 
-		console.log("[PaymentMethod]", payload);
+		// console.log("[PaymentMethod]", payload);
 
 		if (payload.error) {
 			setError(payload.error.message as string);
@@ -90,8 +90,8 @@ function CheckoutForm() {
 					method: "post",
 				});
 				if (response.status === 201) {
-					console.log("order response", response);
-					history.push("/orderReview");
+					// console.log("order response", response);
+					history.push(`/orderReview/${response.data._id}`);
 				}
 			} catch (error) {
 				setError(GENERIC_ERROR_MSG);

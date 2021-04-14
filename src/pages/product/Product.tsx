@@ -13,20 +13,63 @@ import { useDispatch } from "react-redux";
 import { addMultipleProductToCart } from "../../store/cart/shoppingCart";
 import { setProductSidebar } from "../../store/productSidebar/productSide";
 import HeartbeatLoader from "../../loaders/heartbeat/HeartbeatLoader";
-import AddComment from "../../components/comment/AddComment";
+import AddReview from "../../components/review/AddReview";
+import { IAddReview } from "../../types/review.d";
+import ShowSingleReview from "../../components/review/ShowSingleReview";
 interface MatchParams {
 	slug: string;
 }
 
 interface ProductProps extends RouteComponentProps<MatchParams> {}
+
 function Product(props: ProductProps) {
 	const FAKE_DISCOUNT = 30;
 	const dispatch = useDispatch();
-	const [product, setProduct] = useState<IProduct | null>(null);
 
+	const initialReview: IAddReview = {
+		comment: "",
+		rate: 1,
+		title: "",
+		to: "product",
+	};
+	const [review, setReview] = useState<IAddReview>(initialReview);
+	const [product, setProduct] = useState<IProduct | null>(null);
+	const [ordered, setOrdered] = useState(false);
 	const [qty, setQty] = useState(1);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
+	const [commentError, setCommentError] = useState("");
+	const [commentLoading, setCommentLoading] = useState(false);
+
+	const handleCommentChange = (e: any) => {
+		setReview({ ...review, comment: e.target.value });
+	};
+
+	const handleRateChange = (star: number) => {
+		setReview({ ...review, rate: star });
+	};
+
+	const submitComment = async () => {
+		try {
+			setCommentLoading(true);
+			const response = await backend({
+				url: `/review/product/${product?._id}`,
+				method: "post",
+				data: review,
+			});
+
+			if (response.status === 201) {
+				setCommentLoading(false);
+				setReview(initialReview);
+			} else {
+				setCommentLoading(false);
+				setCommentError(GENERIC_ERROR_MSG);
+			}
+		} catch (error) {
+			setCommentLoading(false);
+			setCommentError(GENERIC_ERROR_MSG);
+		}
+	};
 	const getProduct = async () => {
 		setLoading(true);
 		try {
@@ -40,10 +83,21 @@ function Product(props: ProductProps) {
 			setLoading(false);
 		}
 	};
+	const hasUserBoughtProduct = async () => {
+		const response = await backend(
+			`/order/hasBoughtBefore/${product?._id}`
+		);
 
+		setOrdered(response.data);
+	};
 	const getFakeDiscount = (price: number) => {
 		return Math.ceil(price + price * 0.3);
 	};
+	useEffect(() => {
+		if (product) {
+			hasUserBoughtProduct();
+		}
+	}, [product]);
 
 	useEffect(() => {
 		getProduct();
@@ -185,19 +239,54 @@ function Product(props: ProductProps) {
 		);
 	};
 
-	const showAddCommentSection = () => {
+	const showAddReviewSection = () => {
 		return (
-			<div className='comment-section container'>
-				<AddComment />
+			<div>
+				<h3 className='ml-5'>Reviews</h3>
+				<hr />
+				{commentError && (
+					<small className='text-danger text-center'>
+						{commentError}
+					</small>
+				)}
+				{commentLoading && <HeartbeatLoader />}
+				<AddReview
+					disabled={!ordered}
+					type='product'
+					value={review}
+					onStarChange={handleRateChange}
+					onCommentChange={handleCommentChange}
+					onTitleChange={(e) =>
+						setReview({ ...review, title: e.target.value })
+					}
+					onSubmit={submitComment}
+				/>
+			</div>
+		);
+	};
+
+	const showReviews = () => {
+		return (
+			<div>
+				{product?.reviews.map((review) => {
+					return (
+						<ShowSingleReview review={review} key={review._id} />
+					);
+				})}
 			</div>
 		);
 	};
 	return (
-		<div className='product-page-wrapper'>
+		<div className='product-page-wrapper mb-5'>
 			{loading && showLoader()}
 			{error && showError()}
 			{!error && !loading && showProductInfo()}
-			{product && showAddCommentSection()}
+
+			<div className='comment-section container'>
+				{product && showAddReviewSection()}
+				<hr />
+				{product && showReviews()}
+			</div>
 		</div>
 	);
 }
