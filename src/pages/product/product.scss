@@ -93,10 +93,15 @@
 		}
 	}
 
-	.comment-section {
+	.review-section {
 		background-color: white;
 		padding: 1rem;
 		min-height: 60vh;
 		border: $thin-border;
+
+		.show-reviews {
+			max-height: 50vh;
+			overflow-y: auto;
+		}
 	}
 }

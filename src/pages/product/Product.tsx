@@ -14,7 +14,7 @@ import { addMultipleProductToCart } from "../../store/cart/shoppingCart";
 import { setProductSidebar } from "../../store/productSidebar/productSide";
 import HeartbeatLoader from "../../loaders/heartbeat/HeartbeatLoader";
 import AddReview from "../../components/review/AddReview";
-import { IAddReview } from "../../types/review.d";
+import { IAddReview, IReview } from "../../types/review.d";
 import ShowSingleReview from "../../components/review/ShowSingleReview";
 interface MatchParams {
 	slug: string;
@@ -33,6 +33,7 @@ function Product(props: ProductProps) {
 		to: "product",
 	};
 	const [review, setReview] = useState<IAddReview>(initialReview);
+	const [reviews, setReviews] = useState<IReview[] | []>([]);
 	const [product, setProduct] = useState<IProduct | null>(null);
 	const [ordered, setOrdered] = useState(false);
 	const [qty, setQty] = useState(1);
@@ -40,6 +41,20 @@ function Product(props: ProductProps) {
 	const [error, setError] = useState("");
 	const [commentError, setCommentError] = useState("");
 	const [commentLoading, setCommentLoading] = useState(false);
+	useEffect(() => {
+		if (product) {
+			hasUserBoughtProduct();
+			getReviews();
+		}
+	}, [product]);
+
+	useEffect(() => {
+		getProduct();
+	}, []);
+
+	useEffect(() => {
+		getProduct();
+	}, [props.match.params.slug]);
 
 	const handleCommentChange = (e: any) => {
 		setReview({ ...review, comment: e.target.value });
@@ -61,6 +76,7 @@ function Product(props: ProductProps) {
 			if (response.status === 201) {
 				setCommentLoading(false);
 				setReview(initialReview);
+				getProduct();
 			} else {
 				setCommentLoading(false);
 				setCommentError(GENERIC_ERROR_MSG);
@@ -83,6 +99,17 @@ function Product(props: ProductProps) {
 			setLoading(false);
 		}
 	};
+
+	const getReviews = async () => {
+		try {
+			const response = await backend({
+				url: `/review/product/${product?._id}`,
+			});
+			setReviews(response.data.reverse());
+		} catch (error) {
+			setError(GENERIC_ERROR_MSG);
+		}
+	};
 	const hasUserBoughtProduct = async () => {
 		const response = await backend(
 			`/order/hasBoughtBefore/${product?._id}`
@@ -93,19 +120,6 @@ function Product(props: ProductProps) {
 	const getFakeDiscount = (price: number) => {
 		return Math.ceil(price + price * 0.3);
 	};
-	useEffect(() => {
-		if (product) {
-			hasUserBoughtProduct();
-		}
-	}, [product]);
-
-	useEffect(() => {
-		getProduct();
-	}, []);
-
-	useEffect(() => {
-		getProduct();
-	}, [props.match.params.slug]);
 
 	const handleAddMultipleProducts = () => {
 		dispatch(addMultipleProductToCart(product?._id, product?.price, qty));
@@ -119,6 +133,44 @@ function Product(props: ProductProps) {
 		return (
 			<div className='d-flex justify-content-center mt-5'>
 				<span className='text-danger'>{error}</span>
+			</div>
+		);
+	};
+
+	const showAddReviewSection = () => {
+		return (
+			<div>
+				<h3 className='ml-5'>Reviews</h3>
+				<hr />
+				{commentError && (
+					<small className='text-danger text-center'>
+						{commentError}
+					</small>
+				)}
+				{commentLoading && <HeartbeatLoader />}
+				<AddReview
+					disabled={!ordered}
+					type='product'
+					value={review}
+					onStarChange={handleRateChange}
+					onCommentChange={handleCommentChange}
+					onTitleChange={(e) =>
+						setReview({ ...review, title: e.target.value })
+					}
+					onSubmit={submitComment}
+				/>
+			</div>
+		);
+	};
+
+	const showReviews = () => {
+		return (
+			<div className='show-reviews'>
+				{(reviews as IReview[]).map((review: IReview) => {
+					return (
+						<ShowSingleReview review={review} key={review._id} />
+					);
+				})}
 			</div>
 		);
 	};
@@ -238,51 +290,13 @@ function Product(props: ProductProps) {
 			</>
 		);
 	};
-
-	const showAddReviewSection = () => {
-		return (
-			<div>
-				<h3 className='ml-5'>Reviews</h3>
-				<hr />
-				{commentError && (
-					<small className='text-danger text-center'>
-						{commentError}
-					</small>
-				)}
-				{commentLoading && <HeartbeatLoader />}
-				<AddReview
-					disabled={!ordered}
-					type='product'
-					value={review}
-					onStarChange={handleRateChange}
-					onCommentChange={handleCommentChange}
-					onTitleChange={(e) =>
-						setReview({ ...review, title: e.target.value })
-					}
-					onSubmit={submitComment}
-				/>
-			</div>
-		);
-	};
-
-	const showReviews = () => {
-		return (
-			<div>
-				{product?.reviews.map((review) => {
-					return (
-						<ShowSingleReview review={review} key={review._id} />
-					);
-				})}
-			</div>
-		);
-	};
 	return (
 		<div className='product-page-wrapper mb-5'>
 			{loading && showLoader()}
 			{error && showError()}
 			{!error && !loading && showProductInfo()}
 
-			<div className='comment-section container'>
+			<div className='review-section container'>
 				{product && showAddReviewSection()}
 				<hr />
 				{product && showReviews()}

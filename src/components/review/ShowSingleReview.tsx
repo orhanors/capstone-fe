@@ -2,11 +2,13 @@ import React from "react";
 import "./comment.scss";
 import { IReview } from "../../types/review.d";
 import StarRatingComponent from "react-star-rating-component";
+import { useSelector } from "../../store/_helpers/useCustomSelector";
 
 interface Props {
 	review: IReview;
 }
 function ShowSingleReview(props: Props) {
+	const { data } = useSelector((store) => store.user);
 	const { review } = props;
 	return (
 		<div className='show-comment-wrapper d-flex my-3'>
