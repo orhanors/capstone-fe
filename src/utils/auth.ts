@@ -1,5 +1,5 @@
-import { getCookie } from "./cookies";
+//import { getCookie } from "./cookies";
 
 export const isAuthUser = () => {
-	return getCookie("isAuthUser") === "true";
+	return localStorage.getItem("isAuthUser") === "true";
 };

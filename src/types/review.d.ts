@@ -8,6 +8,5 @@ export interface IAddReview {
 }
 export interface IReview extends IAddReview {
 	_id: string;
-
 	user?: IUser;
 }
