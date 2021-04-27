@@ -116,9 +116,9 @@ function Article(props: ArticleProps) {
 		<div className='container mt-5 article-wrapper'>
 			{loading && <HeartbeatLoader />}
 			{!error && !loading && (
-				<Row>
-					<Col md={8}>{showArticle()}</Col>
-					<Col md={4}></Col>
+				<Row className='justify-content-center'>
+					<Col md={10}>{showArticle()}</Col>
+					{/* <Col md={4}></Col> */}
 				</Row>
 			)}
 		</div>

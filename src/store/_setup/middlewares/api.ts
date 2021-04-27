@@ -7,6 +7,7 @@ import axios from "axios";
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
 import * as actions from "../../api/api";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
+import { logoutSuccess, profileSuccess } from "../../user/user";
 
 const refreshAuthLogic = (failedRequest: any) =>
 	axios({
@@ -54,6 +55,11 @@ const api: Middleware = ({ dispatch }: MiddlewareAPI) => (
 		//dispatch(actions.apiCallSuccess(response.data));
 		//Spesific
 		if (onSuccess) {
+			if (onSuccess === profileSuccess.type) {
+				localStorage.setItem("isAuthUser", "true");
+			} else if (onSuccess === logoutSuccess.type) {
+				localStorage.setItem("isAuthUser", "false");
+			}
 			dispatch({ type: onSuccess, payload: response.data });
 		}
 	} catch (error) {
